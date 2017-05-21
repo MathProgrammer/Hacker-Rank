@@ -1,0 +1,25 @@
+Given a square matrix of size , calculate the absolute difference between the sums of its diagonals.
+
+Input Format
+
+The first line contains a single integer, . The next  lines denote the matrix's rows, with each line containing space-separated integers describing the columns.
+
+Constraints
+
+Output Format
+
+Print the absolute difference between the two sums of the matrix's diagonals as a single integer.
+
+---------------------------------------------------------------------
+
+There isn't any need to store the matrix. 
+REad it like a matrix
+
+i = 1 to n
+	j = 1 t0 n
+		Read element
+		
+		if(i = j), add element to diagonal sum
+		if(i + j = n + 1) add element to anti diagonal sum
+
+Print abs(diagonal_sum - anti_diagonal_sum)
