@@ -1,0 +1,28 @@
+Given an integer, n, find each x such that:
+
+1. 0<= x <= n
+2. x XOR n = x + n
+
+where  denotes the bitwise XOR operator. Then print an integer denoting the total number of x's satisfying the criteria above.
+
+Input Format
+
+A single integer, n .
+--------------------------------------------------------------------------------------------------
+
+XOR(a, b) is addition of a and b mod 2 {where a and b are single bits - either 0 or 1}.
+
+Apply the following procedure to n.
+
+Write a 0 wherever there is a 1.
+Write an x wherever there is a 0.
+
+for n = 10, we get 0x0x,
+
+Now any binary combination of these x's gives us a number which - 
+1. Has no bits set in the same position as n
+2. Has the same length as n.
+
+So, performing XOR and addition on these numbers gives us the same result. 
+
+So, the number of such numbers is 2^{Number of 0 bits in n}
