@@ -1,0 +1,34 @@
+Marc loves cupcakes, but he also likes to stay fit. He eats  cupcakes in one sitting, and each cupcake  has a calorie count, c_i.
+ After eating a cupcake with  calories, he must walk at least  (where  is the number cupcakes he has already eaten) miles to maintain his weight.
+
+Given the individual calorie counts for each of the  cupcakes, find and print a long integer denoting the minimum number of miles Marc must walk to maintain his weight. 
+Note that he can eat the cupcakes in any order.
+
+Input Format
+
+The first line contains an integer, , denoting the number of cupcakes. 
+The second line contains  space-separated integers describing the respective calorie counts of each cupcake, 
+
+-----------------------------------------------------------------------
+
+1. Sort the cupcakes in ascending order of their calories. 
+2. Evaluate the polynomial x^{n-1} c_{n-1} + x^{n-2} c_{n-2} + ... + x^1 c_1 + x^0 c_ 0
+    with x = 2 and c_i is the calories of the i-th cupcakes ... c_{n-1} is the lowest calorie, and c_0 is the highest calorie.
+
+    Horner's method is used.
+    P = c_{n-1}
+    P = x*c_{n-1} + c_{n-2}
+    P = x^2*c{n-1} + x*c{n-2} + c{n-3}
+
+    P = x*P + c_0 ... is the last step.
+
+    We take as many steps as the number of coefficients = n, including the initialisation
+    Overall, we do n-1 multiplications of P by x ... So c_{n-1} is multiplied n-1 times, c_{n-2} is multiplied n-2 times and c_0 is multiplied 0 times.
+    In general, c_{n - i} appears in step i and then gets multiplied by x (n - i + 1) times, i.e. all steps after i excluding initialisation
+
+The reason this works is because of the greedy strategy. We want to minimise the sum of products of c_i 2^j. So, we assign the smallest c_i to the greatest 2^j.
+This has to be optimal because any other c_i would have a greater sum with that weight.
+
+Now, we assign the second lowest calorie to the second highest weight with the same reasoning and proceed like that. 
+
+The array is in ascending order. We then evaluate it like a polynomial using Horner's method.
