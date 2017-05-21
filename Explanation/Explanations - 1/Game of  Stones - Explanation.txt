@@ -1,0 +1,33 @@
+Two players (numbered  and ) are playing a game with  stones. Player  always plays first, and the two players move in alternating turns. The game's rules are as follows:
+
+In a single move, a player can remove either , , or  stones from the game board.
+If a player is unable to make a move, that player loses the game.
+Given the number of stones, find and print the name of the winner (i.e.,  or ) on a new line. Each player plays optimally, meaning they will not make a move that causes them
+to lose the game if some better, winning move exists.
+
+Input Format
+
+The first line contains an integer, , denoting the number of test cases. 
+Each of the  subsequent lines contains a single integer, , denoting the number of stones in a test case.
+
+--------------------------------------------
+
+I was searching for some kind of modular solution to this. I couldn't find it so I just wrote a dynamic programming solution that 'brute forced' it because I noticed the 
+constraint was quite small. And, then I saw the editorial had the same solution.
+
+So, here's the solution - 
+
+Notice that if Player 1 takes i stones from the pile of n stones, it is now a game of (n - i) stones where the first player goes second.
+
+Winner[1] = 2
+Winner[2] = Winner[3] = Winner[4] = Winner[5] = 2
+
+After this, go from i = 6 to 100 and calculate the winner in the following way.
+	if(Winner[i - 2] = 1, or Winner[i - 3] = 1 or Winner[i - 5] = 1), 
+		
+		Winner[i] = 1
+	else
+		Winner[i] = 2
+
+In other words, Player 1 checks if taking 2, 3 or 5 stones is a winning position for the second player. If it is, he plays that move. 
+	If all his moves are winning for Player 1, then he can't avoid losing.
