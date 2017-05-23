@@ -1,0 +1,19 @@
+wo players (numbered  and ) are playing a game of Tower Breakers! The rules of the game are as follows:
+
+Player  always moves first, and both players always play optimally.
+Initially there are N towers, where each tower is of height M.
+The players move in alternating turns. In each turn, a player can choose a tower of height X and reduce its height to Y, where 1 <= Y < X and Y evenly divides X.
+If the current player is unable to make any move, they lose the game.
+Given the values of  and , can you determine who will win? If the first player wins, print ; otherwise, print .
+
+---------------------------------------------------------------------
+
+If all the towers are of height 1, Player 1 cannot make a move and loses by force.
+        
+If there are an even number of towers, Player 2 adopts a symmetric strategy.
+If Player 1 reduces a pile from x to y, Player 2 does the same to another tower.
+Player 2 always has a move.
+If there are an odd number of piles, Player 1 reduces 1 pile to height 1 and now enters a game with an even number of piles as the second player.*/
+
+Here's the one line solution -         
+printf( (height_of_tower == 1 || no_of_towers%2 == 0) ? "2\n" : "1\n");
