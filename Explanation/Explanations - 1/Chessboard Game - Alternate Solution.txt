@@ -1,0 +1,22 @@
+This is the winning table generated using the brute force approach.
+
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+As can be seen, Player 1 wins if either x or y is congruent to 3 or 0 mod 4. 
+
+Also, notice every 4x4 board has the same solution.
+
