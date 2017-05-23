@@ -1,0 +1,36 @@
+Two players are playing a game on a  chessboard. The rules of the game are as follows:
+
+The game starts with a single coin located at some  coordinate. The coordinate of the upper left cell is , and the coordinate of the lower right cell is .
+In each move, a player must move the coin from cell  to one of the following locations:
+
+Note: The coin must remain inside the confines of the board.
+
+The players move in alternating turns. The first player who is unable to make a move loses the game.
+
+The figure below shows all four possible moves:
+
+(x-2, y+1)  
+(x-2, y-1) 
+(x+1, y-2) 
+(x-1, y-2)
+
+-----------------------------------------------------------------
+
+If the coin is moved from (x, y) to (x1, y1), then the first player is second player from (x1, y1).
+From the current position, check if it is possible to move to a square winning for second player.
+If no move is possible, a loss in unavoidable. 
+	For convenience - All illegal squares are winning for first player by extension ... 
+	(Doing this frees us from defining base cases - squares winning for player 2 by default because no legal moves will be available from there)
+
+A 'Previous' Player becomes the 'Next' Player after making a move. If he moves to a square which is winning for 'Next' Player, he wins.
+
+    if(x < 1 || x > 15 || y < 1 || y > 15) //Mark illegal positions as winning for Player 1 for convenience.
+        return 1;
+
+    if(winner[x][y] == 0)
+    {
+	if(find_winner(x-2, y+1) == 2 || find_winner(x-2, y-1) == 2 || find_winner(x+1, y-2) == 2 || find_winner(x-1, y-2) == 2)
+            winner[x][y] = 1;
+        else
+            winner[x][y] = 2;
+    }
