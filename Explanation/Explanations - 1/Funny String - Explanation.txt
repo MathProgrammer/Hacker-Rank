@@ -1,0 +1,8 @@
+     for(front_i = 1, back_i = strlen(text) - 1; text[front_i] != '\0' ; front_i++, back_i--)
+     {
+         if(abs(text[front_i] - text[front_i - 1]) != abs(text[back_i] - text[back_i - 1]) )
+         {
+             is_string_funny = false;
+             break;
+         }
+      }
