@@ -1,0 +1,12 @@
+     for(text_i = 0; text[text_i] != '\0'; text_i++)
+     {
+         if(lower(text[text_i]) == lower(substring[substring_i]) )
+         {
+             substring_i++;
+             if(substring_i == 10)
+             {
+                 substring_present = true;
+                 break;
+             }
+         }
+     }
