@@ -1,0 +1,24 @@
+In a palindrome of odd length, only the middle element can occur an odd number of times.
+All other elements must occur in pairs.
+
+A string of even length cannot have only one element an odd number of times (else the string would be of odd length). 
+
+-----------------------------------------------
+
+It is sufficient to check that the count of at most one element is an odd number. 
+(If the string has an odd number of elements, the middle element will have odd count. If string length is even, there can't be only 1 element an odd number of times.)
+
+    for(i = 0; string[i] != '\0'; i++)
+    {
+        alphabet_count[string[i] - 'a']++;
+    }
+
+    for(i = 0; i < NO_OF_ALPHABETS; i++)
+    {
+        if(alphabet_count[i]%2 == 1)
+        {
+            no_of_odd_alphabets++;
+
+            if(no_of_odd_alphabets > 1) break; //A palindrome can have odd occurrences of at most 1 character
+        }
+    }
