@@ -1,0 +1,13 @@
+Roy wanted to increase his typing speed for programming contests. S
+o, his friend advised him to type the sentence "The quick brown fox jumps over the lazy dog" repeatedly, because it is a pangram. 
+(Pangrams are sentences constructed by using every letter of the alphabet at least once.)
+
+After typing the sentence several times, Roy became bored with it. So he started to look for other pangrams.
+
+Given a sentence , tell Roy if it is a pangram or not.
+
+------------------------------------------------------------------------------
+
+Associate a 26-tuple with the string, such that B[i] = true, if the i-th alphabet is present in the string and false otherwise.
+
+If all B[i] is true, the string is a pangram. 
