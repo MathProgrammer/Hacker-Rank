@@ -1,0 +1,13 @@
+Use modular arithmetic - 
+
+message[i] = (message[i] + key)%NO_OF_ALPHABETS
+
+Of course, the ASCII values don't start at 0 and we have to deal with lower case and upper case alphabets seperately. So, here is the C code that does it - 
+
+first_alphabet = (message[i] >= 'a' && message[i] <= 'z' ? 'a' : 'A');
+
+message[i] = first_alphabet + (message[i] - first_alphabet + key)%NO_OF_ALPHABETS;
+
+--------------------------------------------------------------------
+
+Subtraction is done to ensure it happens around 0 and the required offset (first_alphabet) is added again.
