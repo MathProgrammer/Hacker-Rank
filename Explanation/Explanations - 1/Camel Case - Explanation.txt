@@ -1,0 +1,8 @@
+The number of words is 1 more than the number of capital letters
+
+    wordCount = 1
+    for(i = 0; string[i] != '\0'; i++)
+    {
+        if(isCapital(string[i]))
+            wordCount++;
+    }
