@@ -1,0 +1,25 @@
+1. Make the string a palindrome, keeping track of number of changes.
+
+i = 1 to i = len 
+	if(s[i] != s[len - i])
+		s[i] = s[len - i] = max{s[i], s[len - i]}
+		changed[i] = true
+		no_of_changes++
+
+2. Now, if there are still changes possible, try to maximise them
+
+i = 1 to len && (no_of_changes < maximum_changes)
+	if(i = len - i && s[i] != 9)
+	{
+		s[i] = 9, 
+		no_of_changes++
+	}
+	else if(s[i] != 9 && (changed[i] = false & no_of_changes + 2 > maximum_changes) //IF both s[i] and s[len-i] need to be changed, check if two changes are allowed
+	{
+		s[i] = s[len - i]
+		
+		no_of_changes += (changed[i] ? 1 : 2); //If it has already been changed, we're changing one digit, else we're changing both
+	}
+
+3. Check if the number of changes hasn't exceeded the required number.
+
