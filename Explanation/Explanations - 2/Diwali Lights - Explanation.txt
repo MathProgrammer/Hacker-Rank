@@ -1,0 +1,10 @@
+Clearly, the number of ways to do this is 2^n - 1, 
+Each bulb may be in one of two states. We subtract 1 because we don't want to count the situation where all bulbs are off. 
+
+However the numbers are simply too big to use direct application of this. Instead use a table to cache the results.
+
+f(1) = 1;  Because only 1 combination is possible
+f(i) = (2*f(i-1) + 1)%MOD
+
+We put a new bulb at the beginning. This new bulb can be off and the rest can be f(i-1) ways, and it can be on and the rest form f(i-1) combinations. 
+Add 1 because it is possible for this new bulb to be on and the remaining bulbs to be off which is not counted by f(i-1)
