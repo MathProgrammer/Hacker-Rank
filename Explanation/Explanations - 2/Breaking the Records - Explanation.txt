@@ -1,0 +1,13 @@
+    for(i = 1; i <= no_of_games; i++)
+    {
+        scanf("%d", &current_score);
+
+        if(current_score > maximum)
+        {
+            maximum = current_score; maximum_changes++;
+        }
+        if(current_score < minimum)
+        {
+            minimum = current_score; minimum_changes++;
+        }
+    }
