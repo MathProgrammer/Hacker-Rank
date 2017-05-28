@@ -1,0 +1,24 @@
+Use the following greedy algorithm - 
+
+	If a contest is not important, lose it.
+	Put all important contests into a list and sort it in descending order of luck.
+		Lose the first k contests of this list (since it will be the k-luckiest contests) and win the remaining contests. 
+---------------------------------------------------------------------------
+
+   for(i = 1; i <= no_of_contests; i++)
+   {
+       scanf("%d %d", &luck, &importance);
+
+       total_luck += (importance == 0 ? luck : 0); //Lose all unimportant contests.
+       if(importance == 1)
+       {
+           luck_of_important_contests[no_of_important_contests++] = luck;
+       }
+   }
+
+   selection_sort(luck_of_important_contests, no_of_important_contests); //In descending order
+
+   for(i = 0; i < no_of_important_contests; i++) //Lose as many contests as possible. Choose the k-luckiest contests to lose
+   {
+       total_luck += (i < no_of_affordable_losses ? luck_of_important_contests[i] : (0 - luck_of_important_contests[i]) );
+   }
