@@ -1,0 +1,12 @@
+In 1918, the 256th day was 26th September,
+In any other non leap year is is 13th September
+In any leap year, it is 12th September
+
+To check for a leap year - 
+
+    if(year < 1918 && year%4 == 0)
+        return true;
+    else if(year > 1918 && (year%400 == 0 || (year%4 == 0 && year%100 != 0)))
+        return true;
+    else
+        return false;
