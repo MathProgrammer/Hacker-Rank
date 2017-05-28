@@ -1,0 +1,10 @@
+Whoever wins in normal Nim also wins in Poker Nim.
+
+Let us suppose the Nim-Sum of all the piles is not zero. Player 1 makes the required move and takes away enough stones to make the nim sum 0.
+If Player 2 withdraws stones, Player 1 replies with the normal nim-move so that his opponent gets a configuration with nim sum 0.
+
+If Player 2 chooses to add stones, Player 1 simply removes the stones Player 2 added and returns the same configuration back to Player 2. Eventually, it will be a normal
+nim game. 
+
+If the initial nim sum was 0, Player 2 makes the appropriate nim move if Player 1 chooses to withdraw stones. And Takes away any stones Player 1 added, if Player 1 chose to 
+add stones.
