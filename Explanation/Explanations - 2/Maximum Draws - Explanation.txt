@@ -1,0 +1,1 @@
+By the pigeonhole principle, if there are m pairs of socks and m+1 socks are drawn, two of them must belong to the same pair.
