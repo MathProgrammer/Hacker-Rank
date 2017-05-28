@@ -1,0 +1,45 @@
+Maintain a stack of open brackets. 
+
+Whenever a closed bracket is encountered, check if the same kind of bracket is at the top of stack.
+	If yes, pop the element.
+	If no, string is unbalanced.
+
+After processing the entire string like this, check if the stack is empty. Otherwise a sequence of open brackets will be accepted.
+
+-------------------------------------------------------
+
+    balanced = true;
+    for(i = 0; string[i] != '\0'; i++)
+    {
+        switch(string[i])
+        {
+            case '(' :
+            case '[' :
+            case '{' :
+                       open_bracket_stack[++open_bracket_stack_top] = string[i];
+                       break;
+
+            case ')' : if(open_bracket_stack[open_bracket_stack_top] == '(' && open_bracket_stack_top != -1)
+                          open_bracket_stack_top--;
+                       else
+                          return (balanced = false);
+                       break;
+
+            case ']' : if(open_bracket_stack[open_bracket_stack_top] == '[' && open_bracket_stack_top != -1)
+                          open_bracket_stack_top--;
+                       else
+                          return (balanced = false);
+                       break;
+
+            case '}' : if(open_bracket_stack[open_bracket_stack_top] == '{' && open_bracket_stack_top != -1)
+                          open_bracket_stack_top--;
+                       else
+                            return (balanced = false);
+                       break;
+        }
+    }
+
+    if(open_bracket_stack_top != -1)
+        balanced = false;
+
+    return balanced;
