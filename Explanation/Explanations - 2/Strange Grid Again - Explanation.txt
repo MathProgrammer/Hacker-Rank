@@ -1,0 +1,15 @@
+Let's look at the first row - 
+
+T(1, c) = 2*(c - 1)
+
+Now consider any element T(r, c). 
+
+If r is odd, then T(r, c) = T(1, c) + 10*(r - 1) i.e. - it is at an offset of 10 by each pair of rows.
+
+If r is even, then T(r, c) = T(1, c) + 10*(r - 1) + 1,
+
+-------------------------------------------------------------------------
+
+This can be concisely written as - 
+
+number = 2*(column - 1) + ( (row - 1)/2 )*10 + (row - 1)%2
