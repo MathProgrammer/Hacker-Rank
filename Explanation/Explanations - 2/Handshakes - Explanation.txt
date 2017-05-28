@@ -1,0 +1,1 @@
+If there are n people, there are N choose 2, number of pairings. n*(n-1)/2
