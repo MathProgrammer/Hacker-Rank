@@ -1,0 +1,6 @@
+	if(abs(cat_a - mouse) < abs(cat_b - mouse))
+            printf("Cat A\n");
+        else if(abs(cat_a - mouse) > abs(cat_b - mouse))
+            printf("Cat B\n");
+        else
+            printf("Mouse C\n");
