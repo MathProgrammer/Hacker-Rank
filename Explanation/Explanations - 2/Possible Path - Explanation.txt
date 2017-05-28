@@ -1,0 +1,17 @@
+This is an invariants problem !
+
+If a number divides two numbers, it must also divide their difference. 
+
+gcd(u, v) = gcd(u, u-v)
+
+It is quite easy to see that 
+gcd(a, b) = gcd(a + b, b) = gcd(a, a + b) = gcd(a - b, b) = gcd(a, b - a)
+
+The gcd is invariant. It is not possible to go from (a, b) to (x, y) if gcd(a, b) =/= gcd(x, y)
+
+If the gcd's are equal, we make enough moves to go to (gcd, gcd) and then from there go to (x, y). 
+
+--------------------------------------------
+
+I used the Binary GCD algorithm - 
+	I forgot that the base case of this is gcd(0, v) = v, because often 0 is reached without going through 1. Base case must have 0 and not 1. 
