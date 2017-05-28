@@ -1,0 +1,10 @@
+We only need consecutive sums. So, that simplifies things. 
+
+for(i = 1; i <= n; i++)
+	sum += (i <= m ? s[i] : s[i] - s[i-m])
+
+	if(i >= m && sum == d)
+		no_of_pieces++
+
+We keep track of the sum of all elements in the array. Once we exceed the m-th number, subtract the (i-m)-th number so that the sum only contains m consecutive numbers.
+While checking if sum = d, it is important to check that i >= m, other we may get a sum = d, with less than m consecutive squares. 
