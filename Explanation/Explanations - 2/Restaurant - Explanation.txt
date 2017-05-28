@@ -1,0 +1,2 @@
+The square side must divide both l and b, Therefore, square side = gcd(l. b)
+no_of_squares = length*breadth/(square_side*square_side);
