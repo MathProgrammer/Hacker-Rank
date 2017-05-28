@@ -1,0 +1,42 @@
+In a nim game, the first player has a winning strategy if and only if the nim sum of the number of stones in each pile is 0.
+Nim sum is exclusive or of all the piles or bitwise addition mod 2.
+Here is the proof - 
+
+----------------------------------------------------------------
+
+Let s be the nim sum of all the piles before drawing stones from a pile
+Let t be the nim sum of all piles after drawing from one pile. 
+
+Notice that the configuration (0,0,0,...0) winning for the previous player has a nim sum of 0. 
+
+t = t = s + (s + t)
+
+Let x be the pile drawn from and let y be the amount after drawing from the pile. All other piles are equal and cancel out since nim sum is commutative and associative.
+
+t = s + x + y,
+
+Now, if s = 0, it is not possible to make a move that would make t = 0.
+ t = x + y
+
+Since x and y are not equal to each other, t will not be 0.
+
+If s =/= 0, then there is a move that makes t = 0.
+	Choose the rightmost bit of s ... Let this be at position r. 
+	Choose a pile x with a bit set at r. Such a pile must exist or the bit must be 0 for s. 
+
+	Withdraw y = (s + x) piles from pile x. We need to prove that y < x so that the withdrawal is possible.
+		All bits to the left of the r-th bit in both x and y are 0. The r-th bit is 1 in x and 0 in y. So, y has a smaller most significant bit.
+		This means that y is smaller than x and it is possible to leave x with y stones left in it.
+
+t = s + x + y = (s + x) + (s + x) = 0
+
+---------------------------------------------------------------------------
+
+Therefore, if the current configuration has nim sum = 0, the first player cannot win and if it is =/= 0, the first player has a winning strategy. 
+
+	bitwise_XOR_all_piles = 0;
+        for(i = 1; i <= no_of_piles; i++)
+        {
+            scanf("%d",&no_of_stones_in_current_pile);
+            bitwise_XOR_all_piles = bitwise_XOR_all_piles^no_of_stones_in_current_pile;
+        }
