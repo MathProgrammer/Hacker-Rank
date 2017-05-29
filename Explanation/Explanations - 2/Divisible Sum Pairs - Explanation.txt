@@ -1,0 +1,27 @@
+The brute force two-pointers method to solve this problem is in O(n^2).
+
+There is a very elegant O(n) solution using residues.
+
+Store every number a_i in it's residue class with k. Keep track only of the number of elements in each residue class mod k.
+
+Count the number of pairings with - 
+1. All elements in class - 0 are paired with themselves.
+2. All elements in class - i are paired with class k-i .
+
+Note - I forgot to account for the case i = k - i; this is different because when a class is paired with itself, you must account for order. 
+
+--------------------------------------------------
+
+   no_of_modulo_k[MAX_K] = {0}
+
+    for(i = 1; i <= n; i++)
+    {
+        scanf("%d", &current_number);
+        no_of_modulo_k[current_number%k]++;
+    }
+
+    no_of_pairs += ( no_of_modulo_k[0]*(no_of_modulo_k[0] - 1 ) )/2;
+    for(i = 1 ; i <= k/2 ; i++)
+    {
+        no_of_pairs +=  (i == k - i ? (no_of_modulo_k[i]*(no_of_modulo_k[i] - 1)/2) : no_of_modulo_k[i]*no_of_modulo_k[k - i]);
+    }
