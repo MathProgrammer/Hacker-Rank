@@ -1,0 +1,9 @@
+A bunch of rectangles are drawn and the area of their intersection is asked.
+
+    while(no_of_steps-- != 0)
+    {
+        scanf("%d %d", &a, &b);
+        final_intersection_a = min(final_intersection_a, a);
+        final_intersection_b = min(final_intersection_b, b);
+    }
+    final_area = final_intersection_a*1L*final_intersection_b;
