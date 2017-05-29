@@ -1,0 +1,23 @@
+Store it in an array and multiply keeping track of carry and first digit.
+
+    while(num != 1)
+    {
+        carry = 0;
+        for(i = 0; i <= first_digit; i++)
+        {
+            product = num*number[i] + carry;
+            replace = product%base; //Replace is what should be rewritten in the ith digit
+            carry = product/base; //Carry needs to be added when num is multiplied with the next most significant digit
+
+            //The ith digit of number is rewritten now as the product%base we're working in. This case - 10
+            number[i] = replace;
+
+            //If there is a carry in the MSB, then the number of digits will increase. For example, 112x10 = 1120. There is a carry in the MSB.
+            if( (i == first_digit) && (carry > 0) )
+            {
+                first_digit++;
+            }
+        }
+
+        num--;
+    }
