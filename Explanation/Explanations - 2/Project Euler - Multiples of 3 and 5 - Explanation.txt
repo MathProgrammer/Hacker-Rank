@@ -1,0 +1,11 @@
+I used the AP formula for summation -
+
+S_n = n/2(f + l) ... f is the first term, l is the last term.
+
+I had to use a 64 bit data type. And then I realised there was a problem because the multiplication was still happening with integer constants. Just changed it to long.
+
+        no_of_multiples = ( (n/3)*(3 + (n/3)*3L) ) >> 1 ;
+        no_of_multiples += ( (n/5)*(5 + (n/5)*5L) ) >> 1;
+        no_of_multiples -=  ( (n/15)*(15 + (n/15)*15L) ) >> 1;
+
+Had to put the suffix L on the constants where multiplication happens or there will be overflow as two integers are getting multiplied.
