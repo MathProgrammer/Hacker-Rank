@@ -1,0 +1,7 @@
+First, sort the toys and then choose as many toys as possible within the budget. 
+
+
+    for(toys_bought = 0; (total_price + toy[toys_bought] <= budget) && (toys_bought < no_of_toys); toys_bought++)
+    {
+        total_price += toy[toys_bought];
+    }
