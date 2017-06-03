@@ -1,0 +1,10 @@
+There are three values - x, y, z on a day. The two largest values need to be added and stored in max_day. We need to find the max_overall = max{max_overall, max_day}
+
+    for(i = 1 ; i <= no_of_days; i++)
+    {
+        scanf("%d %d %d", &x, &y, &z);
+        minimum = min(x, min(y, z));
+        max_profit_day = (x + y + z) - minimum;
+        
+        max_overall_profit = max(max_overall_profit, max_profit_day);
+    }
