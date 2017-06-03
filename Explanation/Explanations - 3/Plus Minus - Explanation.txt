@@ -1,0 +1,12 @@
+    for(i = 1; i <= no_of_numbers; i++)
+    {
+        scanf("%d",&number);
+
+        if(number > 0) no_of_positive_numbers++;
+        else if(number == 0) no_of_zeroes++;
+        else if(number < 0) no_of_negative_numbers++;
+    }
+
+    positive_fraction = (no_of_positive_numbers*1.0)/no_of_numbers;
+    negative_fraction = (no_of_negative_numbers*1.0)/no_of_numbers;
+    zero_fraction = (no_of_zeroes*1.0)/no_of_numbers;
