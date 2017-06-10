@@ -1,0 +1,7 @@
+Area a and base b of a triangle given, find minimum integer height h, such that area is at least a.
+
+Just check for rounding off error in division. 
+
+    height = (area*2)/base;
+    
+    height += (base*height < 2*area ? 1 : 0);
