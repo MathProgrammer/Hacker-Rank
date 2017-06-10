@@ -1,0 +1,3 @@
+Each cut increases the number of squares by 1. To get mn squares, make mn - 1 cuts.
+
+printf("%lld\n", n*1LL*m - 1);
