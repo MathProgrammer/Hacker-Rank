@@ -1,0 +1,48 @@
+The question says that, for every n, how many 3-colourings of size 3^n are possible.
+
+If there is one block, it can be coloured in 3 ways. If there are m blocks, it can be coloured in 3^m ways.
+
+So, the answer is 3^(3^n). Easier said than done. Mathematically, that is the answer. Programming it takes some more work.
+
+I made the mistake of thinking (3^(3^n)) = (3^3)^n = 27^n. But, this is not true.
+
+Let n = 2, 3^9 =/= 27^2.
+
+I used binary exponentiation to evaluate (3^m)%MOD, but the challenge here is that m is far too large to be stored ina 64 bit data type.
+
+Also (3^m)%MOD =/= 3^(m%MOD) %MOD,
+
+So, here you have to use Euler's theorem, which says that if a and n are coprime, then 
+
+a^{phi(n)} = 1 (mod n), where phi(n) is the number of integers smaller than n coprime to it.
+
+1e9 + 7 is a prime number, hence it is coprime to 3.
+
+3^m % p    can be written as 3^[a.phi(p) + r] % p, where m = k.phi(p) + r, r = m (mod phi(p))
+
+3^[a.phi(p)].3^r = 1.3^r (mod p)
+
+This means we have to divide 3^n by phi(p), take it's residue and then raise 3 to that power mod p.
+
+For a prime number, all numbers less than it are coprime to it. phi(p) = p -1 
+
+So, in short, 
+
+m   = 3^n (mod (p-1))
+ans = 3^n (mod p)
+
+-----------------------------------------------------------------------------------
+
+  /*3^m (mod p) = 3^{q.phi(p) + r} (mod p), Writing m as q.phi(p) + r, where q and r are the quotient and remainder on division by phi(p)
+                  = {3^phi(p)}^q . 3^r (mod p)
+                  = 1^q . 3^r (mod p), Euler's theorem says that a^{phi(n)} = 1 (mod n), if a and n are coprime - 3 and p are coprime in this case,
+                                            since they are both prime numbers
+                  = 1. 3^r (mod p)
+                  = 3^r (mod p), where r is the residue of m with phi(p)
+    Since, p is prime, phi(p) = p-1
+
+    First evaluate m = 3^n (mod p-1)
+    Then, evaluate ans = 3^m (mod p)     */
+
+    number_of_blocks = power(3, n, MOD-1); 
+    no_of_colourings = power(3, number_of_blocks , MOD );
