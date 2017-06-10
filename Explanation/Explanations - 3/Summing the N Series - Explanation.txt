@@ -1,0 +1,6 @@
+The answer is N^2
+
+The only catch of this problem is to reduce N with the mod before squaring ...
+
+N = N%MOD
+ans = (N*N)%MOD
