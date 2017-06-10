@@ -1,0 +1,40 @@
+A number x is said to be better than y if - 
+
+1. The sum of digits of x > sum of digits of y
+2. If sum of digits of x = sum of digits of y, x < y
+
+Find the best divisor of N.
+-----------------------------------------------------------
+
+Circulate through the factors of N in O(root(n)) time and then compare both i and n/i for it's best divisor.
+
+
+int check_which_is_better(int a, int b)
+{
+     int a_digit_sum = sum_digits(a), b_digit_sum = sum_digits(b);
+    
+    if(a_digit_sum > b_digit_sum)
+        return a;
+    else if(a_digit_sum < b_digit_sum)
+        return b;
+    else
+        return min(a, b);
+}
+
+int main()
+{
+    int i, n, best_divisor = 0;
+    scanf("%d", &n);
+    
+    for(i = 1; i*i <= n; i++)
+    {
+        if(n%i == 0)
+        {
+            best_divisor = check_which_is_better(best_divisor, i);
+            best_divisor = check_which_is_better(best_divisor, n/i);
+        }
+    }
+    
+    printf("%d\n",best_divisor);
+    return 0;
+}
