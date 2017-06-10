@@ -1,0 +1,33 @@
+If there is a subarray with gcd 1, then we have a set that is -not empty, no divisor for all numbers. Deleting duplicates from this set doesn't change the gcd.
+
+If there is a subarray with gcd 1, then any array containing this subarray also has gcd 1. Since, gcd(1, x) = 1. 
+
+Find the gcd of the array, if it is 1, then there exists such a subarray. Otherwise, there doesn't. 
+---------------------------------------------------------
+
+int gcd(int a, int b)
+{
+    if(a == 0 || b == 0)
+        return (a + b);
+    else
+        return gcd(min(a, b), (max(a, b)%min(a,b) ) );
+}
+
+void solve()
+{
+    int array_gcd,i, number_i, number_of_elements;
+    scanf("%d", &number_of_elements);
+
+    for(i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &number_i);
+        array_gcd = (i == 1 ? number_i : gcd(array_gcd, number_i));
+    }
+    printf(array_gcd == 1 ? "YES\n" : "NO\n");
+}
+
+--------------------------------------------------
+
+Be very careful while using macros, ... They aren't type safe and just perform substitution. 
+
+When I wrote gcd(min(a, b), max(a, b)%min(a, b) ), without brackets around the second parameter, I got a wrong answer and unexpected behaviour.
