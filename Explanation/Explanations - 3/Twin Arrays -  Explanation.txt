@@ -1,0 +1,67 @@
+Two arrays of the same length are given - A and B. Find the minimum A(i) + B(j) sum, with the condition that i=/= j.
+
+An O(n^2) solution is easy. 
+
+i = 1 to n
+	j = 1 to n
+		if i=/=j
+			sum = A[i] + B[j]
+			minimum = min(minimum, sum)
+
+
+------------------------------------------------------------------
+
+But, there is an O(n) solution as well. 
+
+Keep track of - 
+1. The minimum of the array
+2. The index of the minima
+3. The second smallest element of the array.
+
+If the indices don't match, the answer is the sum of the minima. 
+If they match, answer = min(first_array_minima + second_array_second_smallest, second_array_minima + first_array smallest)
+
+This has to be the answer. There can't be two other numbers which can be chosen with lesser sum. 
+
+Note - Be careful while choosing second smallest if the smallest occurs more than once. 
+
+------------------------------------------------------------------------
+
+    //First Array
+    for(i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &a_i);
+
+        if(a_i <= smallest_first_array)
+        {
+            second_smallest_first_array = smallest_first_array;
+            smallest_first_array = a_i;
+            smallest_index_first_array = i;
+        }
+        else if(a_i < second_smallest_first_array)
+        {
+            second_smallest_first_array = a_i;
+        }
+    }
+
+    //Second array
+    for(i = 1; i <= number_of_elements; i++)
+    {
+        scanf("%d", &b_i);
+
+        if(b_i <= smallest_second_array)
+        {
+            second_smallest_second_array = smallest_second_array;
+            smallest_second_array = b_i;
+            smallest_index_second_array = i;
+        }
+        else if(b_i < second_smallest_second_array)
+        {
+            second_smallest_second_array = b_i;
+        }
+    }
+
+    if(smallest_index_first_array != smallest_index_second_array)
+        sum = smallest_first_array + smallest_second_array;
+    else
+        sum = min( (smallest_first_array + second_smallest_second_array), (smallest_second_array + second_smallest_first_array));
