@@ -1,0 +1,12 @@
+Given an array of  integers, find and print the minimum absolute difference between any two elements in the array.
+
+-------------------------------------------------------------
+
+First sort and then see the maximum consecutive difference. The minimum absolute difference has to be between consecutive elements on the array.
+
+min_difference  = 2e9 + 1;
+
+for(i = 1; i < no_of_elements; i++)
+        min_difference = min(min_difference, array[i] - array[i-1]);
+
+    cout << min_difference;
