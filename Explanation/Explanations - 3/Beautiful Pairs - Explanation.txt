@@ -1,0 +1,23 @@
+The constraints are small so it was possible to do this using a frequency array. 
+
+We count the number of occurences of each element in each array. 
+Make as many matches as possible with each element (min{f_a(x), f_b(x)})
+
+The only catch here is that we need to make a change, even if it is not optimal
+
+For example, if have matched off all elements and the number of pairs = n, we still need to change one element. This reduces the number of pairs and increases it in all 
+other cases.
+
+---------------------------------------------------------------
+
+    cin >> no_of_elements;
+    for(i = 0; i < no_of_elements; i++) cin >> element, frequency_a[element]++;
+    for(i = 0; i < no_of_elements; i++) cin >> element, frequency_b[element]++;
+
+    for(i = 0; i < MAX_SIZE; i++)
+    {
+        beautiful_pairs += min(frequency_a[i], frequency_b[i]);
+    }
+
+    //If all the elements are matched, making 1 change reduces the number of pairs, and increases it in all other cases
+    beautiful_pairs += (beautiful_pairs == no_of_elements ? -1 : 1);
