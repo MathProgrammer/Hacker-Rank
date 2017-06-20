@@ -1,0 +1,31 @@
+Once you get a 1,
+
+go on scanning till you either meet another 1 or end the string. Ensure the gap in between has at least 1 zero and only zeroes.
+
+I wasn't getting an accepted answer because I only checked the last two conditions ...
+
+So, for example 1000 ... after a 1 has 1 zero and only zeroes, and my program was giving 1. IT should give zero because it isn't enclosed by 1s. 
+
+Here's my accepted code.
+
+-------------------------------------------------------------
+
+    for(i = 0; string[i] != '\0'; i++)
+    {
+        if(string[i] == '1')
+        {
+            only_zeroes = true;
+            atleast_one_zero = false;
+
+            for(pattern_i = i + 1; string[pattern_i] != '1' && string[pattern_i] != '\0'; pattern_i++)
+            {
+                if(string[pattern_i] == '0')
+                    atleast_one_zero = true;
+                else
+                    only_zeroes = false;
+            }
+            i = pattern_i  - 1;
+
+            number_of_patterns += (atleast_one_zero && only_zeroes ? 1 : 0);
+        }
+    }
