@@ -1,0 +1,20 @@
+The constraints are quite small ... Build a frequency table of the first 100 elements and display the maximum sum of two consecutive elements.
+
+---------------------------------------------------------------------------
+
+    vector<int> frequency(MAX_ELEMENT, 0);
+
+    for(int i = 0; i < no_of_elements; i++)
+    {
+        cin >> element;
+        frequency[element]++;
+    }
+
+    two_sum = max_two_sum = frequency[1] + frequency[2];
+    for(int i = 3; i < no_of_elements; i++)
+    {
+        two_sum += frequency[i] - frequency[i - 2];
+        max_two_sum = max(max_two_sum, two_sum);
+    }
+
+    cout << max_two_sum << endl;
