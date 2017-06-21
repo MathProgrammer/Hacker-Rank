@@ -1,0 +1,14 @@
+Andrew's answer is correct if - 
+
+1. It is not a blank; and
+2. It doesn't match Catherine.
+
+---------------------------------------------------
+
+    for(int i = 0; i < no_of_questions; i++)
+    {
+        if(vincent_answers[i] != '.' && vincent_answers[i] != catherine_answers[i])
+            no_of_correct_answers++;
+    }
+
+    cout << no_of_correct_answers;
