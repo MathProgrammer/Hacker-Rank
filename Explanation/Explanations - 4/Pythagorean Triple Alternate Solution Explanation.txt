@@ -1,0 +1,52 @@
+Discovered a much simpler approach today ...
+Turns out even numbers lend themselves to a similar logic ...
+
+n is even, then n^2 is a multiple of 4, 
+
+Then, a = root(4k), b = (k - 1), c = (k + 1) 
+
+---------------------------------------------------
+
+Answer ... n <= 2 .... No solution
+
+1. n is even, then 
+
+		a = root(4k), b = (k - 1), c = (k + 1) 
+
+where 4k = n^2,
+
+2. n is odd, then
+
+	a = root(2k + 1), b = k, c = k + 1 
+
+2k + 1 = n^2
+
+--------------------------------------------------
+
+    if(side_1 <= 2)
+    {
+        printf("-1\n");
+        return 0;
+    }
+
+    /*If n is even, n^2 = 4k, then (2k - 1)^2 + 4k = (2k + 1)^2
+    a = root(4k), b = k - 1, c = k + 1
+
+    If n is odd, n^2 = (2k + 1),
+    a = root(2k + 1), b = k, c = k + 1*/
+
+    if(side_1%2 == 0)
+    {
+        k = (side_1*1ll*side_1)/4;
+
+        side_2 = (k - 1);
+        side_3 = (k + 1);
+    }
+    else
+    {
+        k = ( (side_1*1LL*side_1) - 1)/2;
+        side_2 = k;
+        side_3 =(k + 1);
+    }
+
+    
