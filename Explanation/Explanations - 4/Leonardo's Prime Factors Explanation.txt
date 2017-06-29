@@ -1,0 +1,69 @@
+Leonardo loves primes and created  queries where each query takes the form of an integer, . 
+For each , he wants you to count the maximum number of unique prime factors of any number in the inclusive range  and then print this value on a new line.
+
+Note: Recall that a prime number is only divisible by  and itself, and  is not a prime number.
+
+----------------------------------------------------
+
+2 and 3 are the two smallest primes ... So, their product 2.3 is the smallest number that can have two different factors ...
+
+Build a vector where V[i] holds the product of the first i primes. (This grows exponentially. The vector's size will not be too big. Turns out that the product of 
+16 primes is greater than 1e18).
+
+To build the vector, precompute all the primes before 100 ... Be very careful to avoid overflow.
+
+Don't write ... (V.[i-1]*P[i] <= 1e18), write (V[i-1] <= 1e18/prime[i]).
+
+------------------------------------------------
+
+vector <long long> min_number_with_unique_factors;
+
+void precompute_primes()
+{
+    vector <int> is_prime(100 + 1, true);
+    is_prime[0] = is_prime[1] = false;
+    
+    vector <int> prime;
+    for(int i = 2; i < 100; i++)
+    {
+        if(is_prime[i])
+        {
+            for(int multiple = 2*i; multiple < 100; multiple+= i)
+            {
+                is_prime[multiple] = false;
+            }
+            prime.push_back(i);
+        }
+    }
+    
+    min_number_with_unique_factors.push_back(prime[0]);
+    for(int i = 1; min_number_with_unique_factors[i - 1] <= 1e18/prime[i]; i++)
+    {
+        long long new_number = min_number_with_unique_factors.back()*prime[i];
+        
+        min_number_with_unique_factors.push_back(new_number);
+    }
+}
+
+------------------------------------------------------------
+
+After the vector is computed, find the greatest i such that V[i] <= n ... That is the maximum number of distinct factors a number less than or equal to n can have.
+
+void solve()
+{
+    long long n;
+    unsigned int i = 0;
+    scanf("%lld", &n);
+    
+    while(min_number_with_unique_factors[i] <= n && i != min_number_with_unique_factors.size())
+        i++;
+    
+    printf("%u\n", i);
+}
+
+-----------------------------------------------------------------------------
+
+So, if n is greater than the number which has 15 distinct prime factors, there will be a run time error because of out of index access.
+So, check if it has reached the end of the vector.
+
+Don't decrement i by 1 at the end, because the vector is 0-indexed.
