@@ -1,0 +1,56 @@
+-----------------------------------------
+
+So, the coin change recurrence is the following.
+
+Let f(i, j) denote the number of ways to make the sum i using coins only upto coin j.
+
+f(0, j) = 1 for all j.
+
+Otherwise,
+
+f(i, j) = f(i, j - 1), if i < value[j]
+
+f(i, j) = f(i, j - 1) + f(i - value[j], j), otherwise.
+
+--------------------------------------------------------
+
+Notice that the answer we are outputting is always f(sum, n) ... Sum changes ... but in most queries we want to know the number of ways to do it by using all coins.
+
+We can optimise this for space and drop the dimension j.
+
+Now, the array f(i) needs j passes ....
+
+After each pass, f(i) contains the value f(i, j)...
+
+Hence, when we are updating it, it already contains f(i, j - 1) ... Now, we don't need to check if i >= value[j] ... We just start from that value.
+
+---------------------------------------
+
+vector <long long> no_of_ways(1e5 + 1, 0);
+
+void precompute_coin_sums()
+{
+    const int MOD = 1e9 + 7;
+    int coin_value[8 + 1] = {0, 1, 2, 5, 10, 20, 50, 100, 200};
+
+    no_of_ways[0] = 1;
+    for(int coin_no = 1; coin_no <= 8; coin_no++)
+    {
+        for(int sum_reached = coin_value[coin_no]; sum_reached <= 1e5; sum_reached++)
+        {
+            /*f(i, j) = f(i, j - 1) + f(i - value[j], j) ...
+            Now, it already holds the number of ways to reach sum without using j-th coin.
+            So, at each point we use one j-coin.*/
+
+            no_of_ways[sum_reached] = ( no_of_ways[sum_reached] + no_of_ways[sum_reached - coin_value[coin_no] ] )%MOD;
+        }
+    }
+}
+
+void solve()
+{
+    int sum;
+    scanf("%d", &sum);
+
+    printf("%lld\n",no_of_ways[sum]);
+}
