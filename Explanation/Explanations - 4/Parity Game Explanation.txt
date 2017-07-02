@@ -1,0 +1,34 @@
+
+---------------------------------------------------
+
+If the sum of elements in an array is odd, then it means there is at least one odd number ... Removing any odd number from this list gives an even sum.
+
+The only time this is not possible is when it's a singleton array ...
+
+Find the array sum ... if sum is odd and n == 1, then answer is -1.
+
+else If sum is odd and n > 1, answer is 1.
+
+Else (This means sum is even), answer is 0.
+
+-----------------------------------------------
+
+int main()
+{
+    int n, sum, element_i;
+    scanf("%d", &n);
+
+    for(int i = 1; i <= n; i++)
+    {
+        scanf("%d", &element_i);
+
+        sum += element_i;
+    }
+
+    if(sum%2 == 1 && n == 1)
+        printf("-1\n");
+    else
+        printf("%d\n", (sum%2 == 1 && n > 1 ? 1 : 0) );
+
+    return 0;
+}
