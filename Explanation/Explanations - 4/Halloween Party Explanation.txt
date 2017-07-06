@@ -1,0 +1,16 @@
+If a + b = S, is fixed and ab needs to be maximised ...
+
+(a + b)/2 >= root(ab) ... which means the maximum of ab is the square of (a + b)/2 ...
+
+-------------------------------------------------------------------
+
+void solve()
+{
+    int no_of_cuts;
+    scanf("%d", &no_of_cuts);
+
+    int horizontal_cuts = no_of_cuts/2;
+    int vertical_cuts = no_of_cuts - no_of_cuts/2;
+
+    printf("%lld\n", horizontal_cuts*1LL*vertical_cuts);
+}
