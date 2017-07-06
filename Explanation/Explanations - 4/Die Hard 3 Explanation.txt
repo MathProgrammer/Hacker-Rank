@@ -1,0 +1,18 @@
+
+---------------------------------------------
+
+There exist integers x and y such that ax + by = c iff gcd(a, b) | c .... ka'x + k b'y = k(a'x + b'y) = c, where k is the gcd(a, b).  
+If k doesn't divide c, we can't make a linear combination to reach c. To prove the if part, we need to use mathematical induction.
+
+Any linear combination can be reached by pouring.
+
+I got till here ... I just missed the fact that it is only possible if c <= max(a, b).
+
+----------------------------------
+
+{
+        int jug_1, jug_2, target;
+        scanf("%d %d %d", &jug_1, &jug_2, &target);
+
+        printf(target%gcd(jug_1, jug_2) == 0 && target <= max(jug_1, jug_2) ? "YES\n" : "NO\n");
+}
