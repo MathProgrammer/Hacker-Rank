@@ -1,0 +1,88 @@
+
+There is a set of integers - h1, h2, h3, ... , hn.
+
+Initially S = 1, P = 0.
+
+We must use every integer in this set exactly once. We may use them in any order to perform N operations.
+
+An operation has two choices - 
+
+1. Increase S by 1 and then discard the integer we have used from the set.
+2. Increase P by hi*S and then discard the integer we have used from the set.
+
+Maximise the value of P.
+
+-------------------------------------------------------------------
+
+Observation #1 - Strength increases by 1 irrespective of the health of the mandragora.
+
+So, if the question is to maximise strength up to i. Strength up to i will increase by i, regardless of the order in which
+they were defeated.
+
+Observation #2 - Experience increases by a factor multiplied by h_i ... This suggests that it is optimal to have the greatest health last. 
+		Because then we can use the maximum strength up to i - 1 mandagoras and then increase by  the health of the last mmandagora
+
+Observation #3 - The optimal solution consists of first eating some number of mandagoras, and then defeating the rest of them.
+
+		In other words, if the mandagoras are sorted by health, the optimal solution will always
+		increase strength till i mandagoras
+		increase experience in the remaining (n - i) mandagoras.
+
+We prove this by contradiction. Let us assume that there is an optimal strategy where we increase strength till i, experience till j and then strength again at j + 1.
+
+Let the mandragoras be standing in ascending order of health.
+
+h1 <= h2 <= ... <= hi <= .... hj <= h(j + 1) <=... <= hn
+
+So the strength we gain up to hi, is S = (i + 1).
+
+After that we get P = S*(h(i + 1) + h(i + 2) + ... + hj) and then we increase strength by 1 in h(j + 1).
+
+Now, we will use the same number of operations to increase strength, except now, we will use the last strength operation at h(i + 1) instead of h(j + 1).
+
+P' = (S + 1)*(h(i + 2) + h(i + 3) + ... + hj + h(j + 1))
+
+Since H(j + 1) >= H(i + 1)
+
+This means that P' >= P
+
+This establishes that the optimal strategy always consists of performing i strength operations consecutively and then using the remaining operations for increasing P.
+
+Observation #4 - Let f(i) be the experience gained by performing (i - 1) strength operations and only increasing P from i onwards.
+
+f(i) = (1 + i - 1)*(hi + h(i + 1) + ... + hn)
+
+This can be done by precomputing prefix sums.
+
+Ans = Max{f(i)}
+
+----------------------------------------------------------------------------
+
+void solve()
+{
+    int no_of_mandragoras;
+    scanf("%d", &no_of_mandragoras);
+
+    vector <int> mandragora_health(no_of_mandragoras + 1, 0);
+    for(int i = 1; i <= no_of_mandragoras; i++)
+        scanf("%d", &mandragora_health[i]);
+
+    sort(all(mandragora_health));
+
+    vector <long long> sum_of_healths_till(no_of_mandragoras + 1, 0);
+    for(int i = 1; i <= no_of_mandragoras; i++)
+        sum_of_healths_till[i] = sum_of_healths_till[i - 1] + mandragora_health[i];
+
+    long long maximum_experience = 0;
+    for(int defeated_mandragoras = 0; defeated_mandragoras < no_of_mandragoras; defeated_mandragoras++)
+    {
+        int strength = 1 + defeated_mandragoras;
+        
+        long long experience = strength*(sum_of_healths_till[no_of_mandragoras] - sum_of_healths_till[defeated_mandragoras]);
+
+        maximum_experience = max(maximum_experience, experience);
+    }
+
+    printf("%lld\n", maximum_experience);
+}
+
