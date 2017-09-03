@@ -1,0 +1,60 @@
+If every element occurs one time only and they all fall in between 1 and n ... Sum = n(n + 1)/2
+
+If any element occurs more than once, sum will be different.
+
+Note - this ONLY works because there are no negative or 0 numbers,
+
+Otherwise, - n+1, 0, n + 2, -1, n + 3, -2, .... and so on will satisfy this condition. So, use this trick of using the sum with care.
+
+------------------------------------------------------------------------
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+    
+    set <int> unique_set;
+    int previous_element = 0, in_between_1_and_n = true, sorted = true;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element_i;
+        scanf("%d", &element_i);
+        
+        if(element_i < previous_element)
+            sorted = false;
+        
+        if(element_i < 1 || element_i > no_of_elements)
+            in_between_1_and_n = false;
+        
+        unique_set.insert(element_i);
+        
+        previous_element = element_i;
+    }
+    
+    printf(unique_set.size() == no_of_elements && in_between_1_and_n && !sorted ? "Beautiful\n" : "Ugly\n");
+}
+
+------------------------------------------------------------------------------
+
+void solve()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+    
+    int sum = 0;
+    int previous_element = 0, in_between_1_and_n = true, sorted = true;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element_i;
+        scanf("%d", &element_i);
+        
+        sum += element_i;
+        
+        if(element_i < previous_element)
+            sorted = false;
+        
+        previous_element = element_i;
+    }
+    
+    printf(2*sum == no_of_elements*(no_of_elements + 1) && !sorted ? "Beautiful\n" : "Ugly\n");
+}
+
