@@ -1,0 +1,59 @@
+
+---------------------------------------------------
+
+Use a sieve to keep track of the number of distinct prime factors of every number.
+
+For a given K, go up till N and examine every consecutive run of k integers and check if they all have k distinct prime factors.
+
+---------------------------------------
+
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+void precompute(vector <int> &no_of_distinct_prime_factors, int LIMIT)
+{
+    for(int i = 2; i <= LIMIT; i++)
+    {
+        if(no_of_distinct_prime_factors[i] == 0)
+        {
+            for(int multiple = 2*i; multiple <= LIMIT; multiple += i)
+            {
+                no_of_distinct_prime_factors[multiple]++;
+            }
+        }
+    }
+}
+
+int main() 
+{
+    const int LIMIT = 2e6;
+    vector <int> no_of_distinct_prime_factors(LIMIT + 2, 0); 
+    precompute(no_of_distinct_prime_factors, LIMIT);
+    
+    int n, k;
+    scanf("%d %d", &n, &k);
+    
+    vector <int> solution;
+    for(int i = 2; i <= n; i++)
+    {
+        int k_solution_found = true;
+        
+        for(int current = 0; current < k; current++)
+        {
+            if(no_of_distinct_prime_factors[i + current] != k)
+                k_solution_found = false;
+        }
+        
+        if(k_solution_found)
+            solution.push_back(i);
+    }
+    
+    for(int i = 0; i < solution.size(); i++)
+        printf("%d\n", solution[i]);
+    
+    return 0;
+}
+
+
