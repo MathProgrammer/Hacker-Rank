@@ -1,0 +1,39 @@
+
+
+--------------------------------------------
+
+Store an array f(i) denotes the no of elements in A = i (mod k)
+
+Now, for each modulus in between 1 and k/2, choose maximum (f(i), f(k - i))
+
+Special cases - 0 mod k, choose at most one element that is = 0 mod k.
+k/2 mod k, if k is even. Choose at most one element of this class as well.
+
+---------------------------------------
+
+int main()
+{
+    int no_of_elements, k;
+    scanf("%d %d", &no_of_elements, &k);
+
+    vector <int> frequency_mod_k(k + 1, 0);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element_i;
+        scanf("%d", &element_i);
+
+        frequency_mod_k[element_i%k]++;
+    }
+
+    int maximum_subset_size = (frequency_mod_k[0] > 0);
+    for(int i = 1; 2*i < k; i++)
+    {
+        maximum_subset_size += max(frequency_mod_k[i], frequency_mod_k[k - i]);
+    }
+
+    if(k%2 == 0)
+        maximum_subset_size += (frequency_mod_k[k/2] > 0);
+
+    printf("%d\n", maximum_subset_size);
+    return 0;
+}
