@@ -1,0 +1,56 @@
+
+
+------------------------------------------------------------
+
+The first city has to be lit up no matter what. How do we ensure the first city is lit up no matter what ? By keeping a tower lit up within (0, k)
+
+How do we ensure that we use as less towers as possible ? By ensuring this tower is as far as possible.
+
+So for every city that is unlit, search for the furthest tower that can be lit up.
+
+Right = i + (k - 1)
+Left = i - (k - 1)
+
+If there is no tower in between Left and Right, we are done and it is impossible.
+
+After every time we successfully find a tower, the new left = tower + 1
+
+--------------------------------------------------
+
+int main()
+{
+    int no_of_cities, range;
+    scanf("%d %d", &no_of_cities, &range);
+
+    vector <int> has_tower(no_of_cities);
+    for(int i = 0; i < no_of_cities; i++)
+        scanf("%d", &has_tower[i]);
+
+    int is_possible = true;
+    int no_of_towers = 0, left_limit = 0, right_limit, city_i = 0;
+
+    while(city_i < no_of_cities)
+    {
+        right_limit = min(city_i + range - 1, no_of_cities - 1);
+
+        int tower_target = right_limit;
+
+        while(tower_target >= left_limit && !has_tower[tower_target])
+            tower_target--;
+
+        if(tower_target < left_limit)
+        {
+            is_possible = false;
+            break;
+        }
+
+       no_of_towers++;
+       left_limit = tower_target + 1;
+
+       city_i = tower_target + range;
+
+    }
+
+    printf("%d\n", is_possible ? no_of_towers : -1);
+    return 0;
+}
