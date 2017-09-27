@@ -1,0 +1,33 @@
+
+
+---------------------------------------------
+
+So if you had strength S(i) at building i
+
+S(i + 1) = S(i) - (H(i + 1) - S(i))
+         = 2.S(i) - H(i + 1)
+
+So, we need to finish with a energy of 0.
+
+S(i) = {S(i + 1) + H(i + 1)}/2
+
+Do this all the way down to 0 to find the minimum energy required at the beginning.
+
+----------------------------------------------------------------------
+
+int main()
+{
+    int no_of_buildings;
+    scanf("%d", &no_of_buildings);
+
+    vector <int> height(no_of_buildings + 1, 0);
+    for(int i = 1; i <= no_of_buildings; i++)
+        scanf("%d", &height[i]);
+
+    int energy = 0;
+    for(int i = no_of_buildings; i >= 1; i--)
+        energy = (energy + height[i])/2 + (energy + height[i])%2;
+
+    printf("%d\n", energy);
+    return 0;
+}
