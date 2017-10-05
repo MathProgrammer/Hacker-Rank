@@ -1,0 +1,49 @@
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+void precompute(vector <int> &no_of_primes_till, int LIMIT)
+{
+    vector <int> is_prime(LIMIT, true);
+    is_prime[0] = is_prime[1] = false;
+
+    vector <int> primes;
+
+    for(int i = 2; i*i < LIMIT; i++)
+    {
+        if(is_prime[i])
+            primes.push_back(i);
+
+        for(int j = 0; j < primes.size() && i*primes[j] < LIMIT; j++)
+        {
+            is_prime[i*primes[j]] = false;
+
+            if(i%primes[j] == 0) break;
+        }
+    }
+
+    for(int i = 1; i < LIMIT; i++)
+        no_of_primes_till[i] = is_prime[i] + no_of_primes_till[i - 1];
+
+}
+
+int main()
+{
+    const int LIMIT = 1e5;
+    vector <int> no_of_primes_till(LIMIT, 0);
+    precompute(no_of_primes_till, LIMIT);
+
+    int no_of_games;
+    scanf("%d", &no_of_games);
+
+    while(no_of_games--)
+    {
+        int n;
+        scanf("%d", &n);
+        printf("%s\n", no_of_primes_till[n]%2 == 0 ? "Bob" : "Alice");
+    }
+
+    return 0;
+}
+
