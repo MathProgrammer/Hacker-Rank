@@ -1,0 +1,47 @@
+
+-----------------------------------------
+
+Each pile has a grundy number and is an independent game. The total nim sum is the nim sum of the grundy value of each pile.
+
+now, 
+
+we see, grundy[1] = 2,
+        grundy[2] = 1,
+
+Because when there are 2 stones, we may take 0 and leave it at 0, or 1 and go to a nim-state of 2, or take 2 and go to 0.
+
+We can prove by inductoin that grundy[i] = i + 1, i is odd and 
+                                         = i - 1, i is even.
+
+If i is odd, then we may take 0 stones and leave it at i. we may take 1 and go to grundy[i - 1] or take 2 and go to grundy[i - 2].
+ By the induction hypothesis, this takes us to i - 2 and i - 1, respectively.
+
+We repeat this argument continuously till we reach 0 stones and notice that everything from 0 to i is reachable. Hence, grundy[i] = i + 1
+
+If i is even, then we may take 1 stone and now we go to grundy[i - 1] = i, by the induction hypothesis.
+Taking two stones takes us to grundy[i - 2] = i - 3, or take 3 and go to grundy[i - 3] = i - 2.
+
+We can reach every number from 0 to i - 2, but notice there is no way of reaching i - 1. (Although it is possible to reach i)
+
+Hence, grundy[i] = i - 1.
+
+-----------------------------------------
+
+void solve()
+{
+    int no_of_piles; 
+    scanf("%d", &no_of_piles);
+    
+    int nim_sum = 0;
+    for(int i = 1; i <= no_of_piles; i++)
+    {
+        int pile_i;
+        scanf("%d", &pile_i);
+        
+        int mex_i = pile_i + (pile_i%2 == 0 ? - 1 : 1);
+        nim_sum ^= mex_i;
+    }
+    
+    printf("%c\n", nim_sum == 0 ? 'L' : 'W');
+}
+
