@@ -1,0 +1,51 @@
+#include <cstdio>
+
+void get(int frequency[], int n)
+{
+    while(n)
+    {
+        frequency[n%10]++;
+        n /= 10;
+    }
+}
+
+int is_pandigital(int a, int b, int c, int n)
+{
+    const int NO_OF_DIGITS = 10;
+    int digit_frequency[NO_OF_DIGITS] = {0};
+
+    get(digit_frequency, a);
+    get(digit_frequency, b);
+    get(digit_frequency, c);
+
+    if(digit_frequency[0] > 0) return false;
+
+    for(int i = 1; i <= 9; i++)
+        if( (i <= n && digit_frequency[i] != 1) || (i > n && digit_frequency[i] != 0) )
+            return false;
+
+    return true;
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    
+    int pandigital_sum = 0;
+
+    for(int i = 10; i < 1e4; i++)
+    {
+        for(int j = 2; j*j <= i; j++)
+        {
+            if(i%j == 0 && is_pandigital(j, i/j, i, n))
+            {
+                pandigital_sum += i;
+                break;
+            }
+        }
+    }
+
+    printf("%d\n", pandigital_sum);
+    return 0;
+}
