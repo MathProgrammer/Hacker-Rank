@@ -1,0 +1,53 @@
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+void get(vector <int> &is_prime, vector <int> &squares, int LIMIT)
+{
+    is_prime[0] = is_prime[1] = false;
+    for(int i = 2; i*i < LIMIT; i++)
+    {
+        if(is_prime[i])
+            for(int multiple = i*i; multiple < LIMIT; multiple += i)
+                is_prime[multiple] = false;
+    }
+
+    for(int i = 1; i*i < LIMIT; i++)
+        squares.push_back(i*i);
+}
+
+void precompute(vector <int> &no_of_ways, int LIMIT)
+{
+    vector <int> is_prime(LIMIT, true);
+    vector <int> squares;
+    get(is_prime, squares, LIMIT);
+
+    for(int i = 1; i < LIMIT; i++)
+    {
+        if(!is_prime[i])
+        {
+            for(int j = 0; j < squares.size() && 2*squares[j] <= i; j++)
+                no_of_ways[i] += (is_prime[i - 2*squares[j]]);
+        }
+    }
+}
+
+int main()
+{
+    const int LIMIT = 5e5;
+    vector <int> no_of_ways(LIMIT, 0);
+    precompute(no_of_ways, LIMIT);
+
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+
+    while(no_of_test_cases--)
+    {
+        int n;
+        scanf("%d", &n);
+        printf("%d\n", no_of_ways[n]);
+    }
+
+    return 0;
+}
