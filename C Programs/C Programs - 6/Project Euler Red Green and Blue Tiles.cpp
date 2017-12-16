@@ -75,7 +75,7 @@ void solve()
         return;
     }
 
-    long long ans[1][4] = {tiles[4], tiles[3], tiles[2], tiles[1]};
+    long long ans[4][4] = {tiles[4], tiles[3], tiles[2], tiles[1]};
 
     long long matrix[4][4] = { {1, 1, 0, 0},
                                {1, 0, 1, 0},
