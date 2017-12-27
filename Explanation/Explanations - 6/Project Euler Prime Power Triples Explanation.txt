@@ -1,0 +1,88 @@
+
+The key observation here is that powers grow quite rapidly.
+
+So, upto 10^7, we need the squares of about 450 primes, cubes of about 150, and fourth powers of only 16 !
+
+This allows a cubic algorithm
+
+I sieved all primes till 4e3, because 4e3 square > 1e7.
+
+And then get all squares, cubes and fourth powers in that range.
+
+Then mark all expressible numbers and answer each test case in O(1) time.
+
+---------------------------------------------------------------------------------
+
+void sieve(vector <int> &primes, int LIMIT)
+{
+    vector <int> is_prime(LIMIT, true);
+    is_prime[0] = is_prime[1] = false;
+
+    for(int i = 2; i < LIMIT; i++)
+    {
+        if(is_prime[i])
+            primes.push_back(i);
+
+        for(int j = 0; j < primes.size() && i*primes[j] < LIMIT; j++)
+        {
+            is_prime[i*primes[j]] = false;
+
+            if(i%primes[j] == 0) break;
+        }
+    }
+}
+
+void precompute(vector <int> &no_of_expressible_numbers_till, vector <int> &primes, int N)
+{
+    vector <int> squares;
+    for(int i = 0; primes[i]*primes[i] <= N; i++)
+        squares.push_back(primes[i]*primes[i]);
+
+    vector <int> cubes;
+    for(int i = 0; primes[i]*primes[i]*primes[i] <= N; i++)
+        cubes.push_back(primes[i]*primes[i]*primes[i]);
+
+    vector <int> fours;
+    for(int i = 0; primes[i]*primes[i]*primes[i]*primes[i] <= N; i++)
+        fours.push_back(primes[i]*primes[i]*primes[i]*primes[i]);
+
+    vector <int> is_expressible(N + 1, false);
+
+    for(int i = 0; i < squares.size(); i++)
+    {
+        for(int j = 0; j < cubes.size() && squares[i] + cubes[j] <= N; j++)
+        {
+            for(int k = 0; k < fours.size() && squares[i] + cubes[j] + fours[k] <= N; k++)
+            {
+                is_expressible[squares[i] + cubes[j] + fours[k]] = true;
+            }
+        }
+    }
+
+    for(int i = 1; i <= N; i++)
+        no_of_expressible_numbers_till[i] = no_of_expressible_numbers_till[i - 1] + is_expressible[i];
+}
+
+int main()
+{
+    int LIMIT = 4e3;
+    vector <int> primes;
+    sieve(primes, LIMIT);
+
+    int N = 1e7;
+    vector <int> no_of_expressible_numbers_till(N + 1, 0);
+
+    precompute(no_of_expressible_numbers_till, primes, N);
+
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+
+    while(no_of_test_cases--)
+    {
+        int n;
+        scanf("%d", &n);
+        printf("%d\n", no_of_expressible_numbers_till[n]);
+    }
+
+    return 0;
+}
