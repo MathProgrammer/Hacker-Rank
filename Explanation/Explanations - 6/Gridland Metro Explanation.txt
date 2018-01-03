@@ -1,0 +1,218 @@
+
+Let us say there is only one row, how do we solve this problem ?
+
+Keep track of the type of pillar - is it a start or end ?
+
+Sort the pillars.
+
+Go through them, one by one. 
+
+Increase the counter by 1, when you visit a starting pillar. Decrease the counter by 1, when you visit an ending pillar.
+
+When the counter reaches 0 ... Let's say it is at column j and counter started at column i 
+
+The current stretch is (j - i + 1)
+
+For example, 
+
+(3, 5) 
+(2, 5) 
+(5, 7)
+(9, 11)
+
+- X X X X X X - X X X
+
+Here, when we sort the intervals, we get - 
+
+{2, 3, 5, 5, 5, 7, 9, 11}
+
+The counter starts at 2, so we remember 2 as the starting of the current 'stretch'
+
+There are two 'stretches' here - one from 2 to 7, other from 9 to 11.
+
+Now, the counter increases at 3, increases at 5, decreases by two at 5 and then becomes 0 at 7.
+
+This concludes the current stretch and the length = (7 - 2 + 1) = 6
+
+One thing to be careful while sorting is, it should be (2,Start), (3,Start), (5,Start), (5,End), (5,End)
+
+(Meaning the column 5 denoting the Start should come BEFORE the column 5 denoting the end)
+
+If this does not happen, then - (2, Start) (3, Start), (5, end), (5, end) (5, start), (7, start)
+
+Then the counter reaches 0 at the fourth pillar and then restarts
+
+SO, what happens is, we now see three stretches - (5 - 2 + 1) + (7 - 5 + 1) + (11 - 9 + 1) = 4 + 3 + 3 = 10
+
+But, the answer is 9.
+
+We are including the block 5 in two intervals and it is getting counted twice.
+
+So, if a column occurs in multiple tracks, the ones where it starts must be placed first.
+
+Algorithm for one Row -
+
+1. Sort all pillars, first by column no
+2. If column no is equal, then place the columns which represents starts first.
+3. Go through the sorted list, whenever a start happens increment the counter, end decrements the counter
+4. When the counter reaches 0, calculate the length of the current stretch.
+
+long long covered_blocks = 0;
+
+    for(int row = 0; row < smallest_free_number; row++)
+    {
+            sort(all(tracks[row]), compare);
+
+            long long current_track_start = 0;
+            int no_of_starts = 0;
+
+            for(int pillar = 0; pillar < tracks[row].size(); pillar++)
+            {
+                if(tracks[row][pillar].type == START)
+                {
+                    no_of_starts++;
+
+                    if(current_track_start == 0)
+                        current_track_start = tracks[row][pillar].column_no;
+                }
+                else if(tracks[row][pillar].type == END)
+                {
+                    no_of_starts--;
+
+                    if(no_of_starts == 0)
+                    {
+                        int current_track_end = tracks[row][pillar].column_no;
+
+                        covered_blocks += (current_track_end - current_track_start + 1);
+
+                        current_track_start = 0;
+                    }
+                }
+            }
+    }
+
+--------------------------------
+
+Now, the harder problem, we have multiple rows 
+
+For each row, maintain a vector, which will contain information about all the pillars.
+
+Now, the number of pillars can be a billion (too large), but the number of tracks is only a thousand.
+
+So, map each row to a number in between 1 to 1000. 
+
+This can be done by maintaining a map of numbers and each row gets mapped onto the smallest number available
+
+Let's say the row numbers are - 
+
+10872
+1876253
+10341234
+
+So, 10872 gets mapped to 0, 
+1876253 gets mapped to 1
+10341234 gets mapped to 2
+
+The reason this mapping is necessary is an array of size greater than 10 million is not possible and in this case, 
+it would be wasting a lot of space since only 1000 locations are necessary.
+
+And so on
+
+Now, for each row, sort all the pillars - first by column no and then by type.
+Then go through them and keep track of the stretches.
+
+---------------------------------------------------------
+
+struct post
+{
+    int column_no, type;
+};
+
+int compare(const post &A, const post &B)
+{
+    if(A.column_no < B.column_no)
+        return true;
+    else if(A.column_no == B.column_no)
+        return (A.type < B.type);
+
+    return false;
+}
+
+map <int, int> assigned;
+int smallest_free_number = 0;
+
+int get_index(int n)
+{
+    if(assigned.count(n) == 0)
+    {
+        assigned[n] = smallest_free_number++;
+    }
+
+    return assigned[n];
+}
+
+int main()
+{
+    int no_of_rows, no_of_columns, no_of_tracks;
+    scanf("%d %d %d", &no_of_rows, &no_of_columns, &no_of_tracks);
+
+    vector <post> tracks[1001];
+
+    const int START = 1, END = 2;
+
+    while(no_of_tracks--)
+    {
+        int row, column_1, column_2;
+        scanf("%d %d %d", &row, &column_1, &column_2);
+
+        post start, ending;
+        start.column_no = column_1, start.type = START;
+        ending.column_no = column_2, ending.type = END;
+
+        row = get_index(row);
+        tracks[row].push_back(start);
+        tracks[row].push_back(ending);
+    }
+
+    long long covered_blocks = 0;
+
+    for(int row = 0; row < smallest_free_number; row++)
+    {
+            sort(all(tracks[row]), compare);
+
+            long long current_track_start = 0;
+            int no_of_starts = 0;
+
+            for(int pillar = 0; pillar < tracks[row].size(); pillar++)
+            {
+                if(tracks[row][pillar].type == START)
+                {
+                    no_of_starts++;
+
+                    if(current_track_start == 0)
+                        current_track_start = tracks[row][pillar].column_no;
+                }
+                else if(tracks[row][pillar].type == END)
+                {
+                    no_of_starts--;
+
+                    if(no_of_starts == 0)
+                    {
+                        int current_track_end = tracks[row][pillar].column_no;
+
+                        covered_blocks += (current_track_end - current_track_start + 1);
+
+                        current_track_start = 0;
+                    }
+                }
+            }
+    }
+
+    long long no_of_blocks = no_of_rows*1LL*no_of_columns;
+    long long uncovered_blocks = no_of_blocks - covered_blocks;
+
+    printf("%lld\n", uncovered_blocks);
+    return 0;
+}
+
+
