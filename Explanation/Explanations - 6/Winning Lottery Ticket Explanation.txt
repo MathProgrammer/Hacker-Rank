@@ -1,0 +1,81 @@
+
+This is very interesting. 
+
+Represent each number with a binary string of length 10. Number the bits from 0 to 9. 
+
+The i-th bit is set if the number has the digit i. 
+
+The way to get this mask is, 
+
+mask = 0;
+
+for(int i = 0; i < ticket.size(); i++)
+{
+	int number = ticket[i];
+
+	mask |= (1 << number);
+}
+
+Get the number and set that position with bitwise OR with 1 at that position. 
+
+Now the mask can have maximum value (2^10 - 1) (10 1s in binary). This is 1024. 
+
+Now we go through every pair of masks. If two masks (mask1, mask2) have a bitwise OR = 1111111111,
+
+Then it means the two numbers have all 10 digits in between them. 
+
+So, keep track of the frequency of each mask. 
+
+Then, go through every pair of masks and if (mask1 OR mask2) = (2^10 - 1), 
+
+then add frequency(mask1)*frequency(mask2) to the answer.
+
+Avoid overcounting. If mask1 = mask2, then add (frequency(mask)*(frequency(mask) - 1))/2 to the answer.
+
+-------------------------------------------------------------------
+
+int main()
+{
+    int no_of_tickets;
+    scanf("%d", &no_of_tickets);
+
+    const int FULL_MASK = (1 << 10) - 1;
+
+    vector <long long> strings_with(FULL_MASK + 1, 0);
+
+    for(int i = 1; i <= no_of_tickets; i++)
+    {
+        string ticket;
+        cin >> ticket;
+
+        int mask = 0;
+
+        for(int j = 0; j < ticket.size(); j++)
+        {
+            int number = ticket[j] - '0';
+
+            mask |= (1 << number);
+        }
+
+        strings_with[mask]++;
+    }
+
+    long long no_of_pairs = 0;
+
+    for(int mask_1 = 0; mask_1 <= FULL_MASK; mask_1++)
+    {
+        for(int mask_2 = mask_1; mask_2 <= FULL_MASK; mask_2++)
+        {
+            if( (mask_1|mask_2) == FULL_MASK)
+            {
+                if(mask_1 == mask_2)
+                    no_of_pairs += (strings_with[mask_1]*(strings_with[mask_2] - 1) )/2;
+                else
+                    no_of_pairs += strings_with[mask_1]*strings_with[mask_2];
+            }
+        }
+    }
+
+    printf("%lld\n", no_of_pairs);
+    return 0;
+}
