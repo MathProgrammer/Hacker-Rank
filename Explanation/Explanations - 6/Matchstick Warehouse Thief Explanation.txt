@@ -1,0 +1,42 @@
+
+Sort the crates by the number of matches in each box. Then take the n greatest boxes.
+
+-----------------------------------------------
+
+struct crate
+{
+    int no_of_boxes, no_of_matches;
+};
+
+int compare(const crate &A, const crate &B)
+{
+    return (A.no_of_matches < B.no_of_matches);
+}
+
+int main()
+{
+    int no_of_crates, max_boxes;
+    scanf("%d %d", &max_boxes, &no_of_crates);
+
+    vector <crate> crates(no_of_crates);
+    for(int i = 0; i < no_of_crates; i++)
+    {
+        scanf("%d %d", &crates[i].no_of_boxes, &crates[i].no_of_matches);
+    }
+
+    sort(all(crates), compare);
+
+    int total_matches = 0;
+
+    for(int i = no_of_crates - 1; i >= 0; i--)
+    {
+        int boxes_taken = min(max_boxes, crates[i].no_of_boxes);
+
+        total_matches += boxes_taken*crates[i].no_of_matches;
+
+        max_boxes -= boxes_taken;
+    }
+
+    printf("%d\n", total_matches);
+    return 0;
+}
