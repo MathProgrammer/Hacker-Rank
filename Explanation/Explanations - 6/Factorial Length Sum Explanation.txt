@@ -1,0 +1,126 @@
+You are given an array A = {a_1, a_2, ... a_n}, n <= 16.
+
+First, replace it with 
+
+F = {a_1!, a_2!, ... a_n!}
+
+Now, define f(x) as the sums of the primes in the prime factorisation of x. 
+
+For example, f(4) = 2, f(12) = 2 + 1 = 3
+
+Now, replace each element in F
+
+P = {f(a_1!), f(a_2!), ... f(a_n!)}
+
+Now, the interesting part. 
+
+The question is asking for all subsequences of even sum in P. 
+
+--------------------------------------------------------------------------------------------------
+
+Now, this question can be divided into two parts - the first part is how to get p_i. The second is how to get all subsequence sums.
+
+How do we get p_i ? 
+
+Let the prime factorisation of x = p1_^e1 p2^e2 p3^e3 ... pm^em
+
+Notice that f(x) =  f(p1_^e1 p2^e2 p3^e3 ... pm^em) = f(p1^e1) + f(p2^e2 p3^e3 ... pm^em)
+
+= e1 + f(p2^e2 p3^e3 ... pm^em)
+
+Notice that x > p2^e2 p3^e3 ... pm^em
+
+So, the problem of evaluating f(x) can be solved provided we have f(p2^e2 p3^e3 ... pm^em)
+
+We have divided the problem into independent subproblems. This allows the use of DP. 
+
+For every number, keep track of it's largest prime factor. (This can be done using a sieve of Erathosthenes)
+
+Now if i = p^x i', where gcd(p, i') = 1 and p = greatest prime factor(i)
+
+Then f(i) = x + f(i')
+
+We are interested in f(i!). This is nothing but, f(1) + f(2) + f(3) + ... + f(i)
+
+Precompute the prefix sum of this f. Overall, it is O(N log N + N)
+
+void precompute(vector <long long> &sum_factorial_length, int MAX)
+{
+    vector <int> largest_prime_factor(MAX + 1, 0);
+    vector <int> factorial_length(MAX + 1, 0);
+    for(int i = 2; i <= MAX; i++)
+    {
+        if(largest_prime_factor[i] == 0)
+        {
+            for(int multiple = i; multiple <= MAX; multiple += i)
+                largest_prime_factor[multiple] = i;
+        }
+
+        int exponent = 0, reduced_i = i;
+
+        while(reduced_i%largest_prime_factor[i] == 0)
+        {
+            exponent++;
+            reduced_i /= largest_prime_factor[i];
+        }
+
+        factorial_length[i] = exponent + factorial_length[reduced_i];
+    }
+
+    for(int i = 1; i <= MAX; i++)
+        sum_factorial_length[i] = sum_factorial_length[i - 1] + factorial_length[i];
+}
+
+-------------------------------------------------------------------------------------------
+
+Now, the interesting part. How do you find all subsequence sums ? It doesn't need to be done efficiently as the number is small. N = 16. 
+
+I learnt a new thing here. I was confused about how to do it. 
+
+N = 16, allows you to visit each subsequence via a bitmask !
+
+If a bit is set, include that element, else don't include it. Then find the sum and check if the sum is even.
+
+Visit all 2^16 subsets.
+
+int main()
+{
+    const int MAX = 1e6;
+
+    vector <long long> sum_factorial_length(MAX + 1, 0);
+    precompute(sum_factorial_length, MAX);
+
+    int number_of_elements;
+    scanf("%d", &number_of_elements);
+
+    vector <long long> P(number_of_elements, 0);
+    for(int i = 0; i < number_of_elements; i++)
+    {
+        int a_i;
+        scanf("%d", &a_i);
+
+        P[i] = sum_factorial_length[a_i];
+    }
+
+    const int MAX_MASK = 1 << number_of_elements;
+    long long total_pleasing_value  = 0;
+
+    for(int mask = 1; mask < MAX_MASK; mask++)
+    {
+        long long pleasing_value = 0;
+
+        for(int i = 0; (1 << i) <= mask; i++)
+        {
+            if( (mask & (1 << i)) != 0)
+                pleasing_value += P[i];
+        }
+
+        total_pleasing_value += (pleasing_value%2 == 0 ? pleasing_value : 0);
+    }
+
+    printf("%lld\n", total_pleasing_value);
+    return 0;
+}
+
+-------------------------------------------------------------------------------------------------------------
+
