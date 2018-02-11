@@ -1,0 +1,121 @@
+
+Now, in every possible game play, we will take the first i elements of A and first j element of B.
+
+We need to maximise (i + j) such that
+
+A_sum[i] + B_sum[j] <= x.
+
+Now, let us say we take the first i elements of A, how many elements of B can we take ?
+
+Let this number be j.
+
+Notice that if, A_sum[i] + B_sum[j] <= x, 
+
+then even
+
+A_sum[i] + B_sum[j - 1] <= x, since B_sum[j - 1] <= B_sum[j]
+
+Also, if A_sum[i] + B_sum[j] > x, 
+
+Then even
+
+A_sum[i] + B_sum[j + 1] > x
+
+As we can see, 
+
+A_sum[i] + B_sum[j] is an increasing function in j.
+
+This means we can use binary search !
+
+If (A_sum[i] + B_sum[mid] > x), then for all values > mid, it will be > x, No point in searching it. 
+
+If (A_sum[i] + B_sum[mid] <= x), then for all values < mid, it will be smaller < x, No point in searching as we want to maximise (i + j)
+
+So start = 0, end = B_size
+
+Check the mid and divide the search space into two each time and update the conditions accordingly.
+
+Algorithm -
+
+1. For each i from 0 to A_size, find the best j you can take
+
+2. Ans = max(i + j)
+
+3. We go over all i's ... Each time we do a (log n) search on B
+
+Time complexity = O(n log m) or O(m log n), if you want to fix j and then binary search i.
+
+----------------------------------------------------------------------
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve()
+{
+    int A_size, B_size, max_sum;
+    scanf("%d %d %d", &A_size, &B_size, &max_sum);
+    
+    vector <int> A(A_size + 1);
+    for(int i = 1; i <= A_size; i++)
+        scanf("%d", &A[i]);
+
+    vector <long long> A_sum(A_size + 1, 0);
+    for(int i = 1; i <= A_size; i++)
+        A_sum[i] = A_sum[i - 1] + A[i];
+    
+    vector <int> B(B_size + 1);
+    for(int i = 1; i <= B_size; i++)
+        scanf("%d", &B[i]);
+    
+    vector <long long> B_sum(B_size + 1, 0);
+    for(int i = 1; i <= B_size; i++)
+        B_sum[i] = B_sum[i - 1] + B[i];
+    
+    int max_chosen_elements = 0;
+    
+    for(int i = 0; i <= A_size && A_sum[i] <= max_sum; i++)
+    {
+        int A_elements = i, B_elements; 
+        
+        int start = 0, end = B_size;
+        
+        while(start <= end)
+        {  
+            int mid = (start + end) >> 1; 
+            
+            if(A_sum[i] + B_sum[mid] <= max_sum)
+            {
+                if(mid + 1 == B_size + 1 || A_sum[i] + B_sum[mid + 1] > max_sum)
+                {
+                    B_elements = mid;
+                    break;
+                }
+                else
+                {
+                    start = mid + 1;
+                }
+            }
+            else
+            {
+                end = mid;
+            }
+        }
+     
+        max_chosen_elements = max(max_chosen_elements, A_elements + B_elements);
+    }
+        
+    printf("%d\n", max_chosen_elements);
+}
+
+int main()
+{
+    int no_of_games;
+    scanf("%d", &no_of_games);
+    
+    while(no_of_games--)
+        solve();
+    
+    return 0;
+}
+
