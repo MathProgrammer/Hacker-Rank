@@ -25,7 +25,6 @@ int find_minimum_moves_with(int a, int b, int n)
 
     queue <info> Q;
     
-    info origin{0, 0, 0};
     Q.push({0, 0, 0});
     visited[0][0] = true;
 
