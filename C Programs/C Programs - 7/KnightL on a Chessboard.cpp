@@ -4,6 +4,11 @@
 
 using namespace std;
 
+struct info
+{
+    int x, y, minimum_moves;
+};
+
 int is_inside(int x, int y, int n)
 {
    return (x >= 0 && x < n && y >= 0 && y < n);
@@ -14,38 +19,34 @@ int find_minimum_moves_with(int a, int b, int n)
     int visited[n][n];
     memset(visited, false, sizeof(visited));
 
-    int no_of_neighbours = 8;
+    const int NO_OF_NEIGHBOURS = 8;
     int x_step[] = {a, a, -a, -a, b, b, -b, -b};
     int y_step[] = {b, -b, b, -b, a, -a, a, -a};
 
-    queue <int> X;
-    queue <int> Y;
-    queue <int> minimum_moves;
-
-    X.push(0); Y.push(0); minimum_moves.push(0);
+    queue <info> Q;
+    
+    info origin{0, 0, 0};
+    Q.push({0, 0, 0});
     visited[0][0] = true;
 
-    while(!X.empty())
+    while(!Q.empty())
     {
-        int x = X.front(); X.pop();
-        int y = Y.front(); Y.pop();
-        int min_moves = minimum_moves.front(); minimum_moves.pop();
+        info current_square = Q.front(); Q.pop();
 
-        for(int i = 0; i < no_of_neighbours; i++)
+        for(int i = 0; i < NO_OF_NEIGHBOURS; i++)
         {
-            int neighbour_x = x + x_step[i];
-            int neighbour_y = y + y_step[i];
-
+            int neighbour_x = current_square.x + x_step[i];
+            int neighbour_y = current_square.y + y_step[i];
+            int moves_till_here = current_square.minimum_moves + 1;
+            
             if(neighbour_x == n - 1 && neighbour_y == n - 1)
             {
-                return (min_moves + 1);
+                return moves_till_here;
             }
 
             if(is_inside(neighbour_x, neighbour_y, n) && !visited[neighbour_x][neighbour_y])
             {
-                X.push(neighbour_x);
-                Y.push(neighbour_y);
-                minimum_moves.push(min_moves + 1);
+                Q.push({neighbour_x, neighbour_y, moves_till_here});
 
                 visited[neighbour_x][neighbour_y] = true;
             }
