@@ -1,0 +1,36 @@
+
+Let us say we have an anti-palindromic string T[1 ... n]
+
+Now, let us say we add a character in the end c, and now we get a string S[1 ... n+1] that is no longer palindromic.
+
+This means a palindrome of length = 2 or 3 was formed at the end. 
+
+Let us prove this. 
+
+If there was a palindrome of length k > 3 formed, then we can remove the first character and the last character (c) and we will have a palindrome of length (k - 2)
+
+But this palindrome of length (k - 2) will be completely contained within T, and contradicts our assumption that T is anti-palindromic. 
+
+So, to avoid a palindromic string, it is sufficient to avoid making a 2 or 3 palindrome at the end. 
+
+We can choose our first character in M ways, second in M - 1 ways
+
+After that, every character must not be equal to T[i - 1] and T[i - 2], so (M - 2) ways
+
+Answer = M(M - 1)(M - 2)^{n - 2}
+
+-----------------------------------------------------------------
+
+void solve()
+{
+    long long length, no_of_alphabets;
+    scanf("%lld %lld", &length, &no_of_alphabets);
+
+    const int MOD = 1e9 + 7;
+    long long answer = 1;
+
+    if(length == 1) answer = no_of_alphabets%MOD;
+    else answer = ( ( ( no_of_alphabets*(no_of_alphabets - 1) )%MOD )*power(no_of_alphabets - 2, length - 2, MOD) )%MOD;
+
+    printf("%lld\n", answer);
+}
