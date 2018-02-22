@@ -47,7 +47,19 @@ All that matters is the relative order of (A[i - 1], A[i], A[i + 1]) ... If we f
 
 (A[i - 1], A[i + 1], A[i]) or (A[i + 1], A[i - 1], A[i])
 
-Totally, there are 6 ways ... So in every 6 random binary search trees, A[i] will be a leaf in 2 of them. 
+-----------------------------------------------------------------
+
+Let us count how many ways this happens - First, we choose 3 spots out of n ... choose(n, 3)
+The remaining (n - 3) elements can be arranged in any way.
+
+Answer = 2 x (n(n - 1)(n - 2) x (n - 3)!)/6
+
+Now, totally there are n! arrangements ... So, the probability of getting A[i] as a leaf = 
+
+2 n!/ 6 n! = 2/6
+
+(This can be interpreted in another way .. There are 6 ways of arranging 3 elements ... If we fix the last element, there are
+two ways of arranging the other two.)
 
 So, the total expectation of getting A[i] = Probability of getting A[i] * A[i] = 2/6 x A[i]
 
