@@ -1,0 +1,92 @@
+
+Let's break it down ...
+
+Firstly, the process Bob does creates a binary search tree. For a given binary search tree, Bob gets the sum of the leaves.
+
+Now, we need to determine the following -
+
+Consider a list of numbers - [A1, A2, A3, ... , An].
+
+Make all possible binary search trees with these numbers. And find the sum of all their leaves. 
+
+Now, notice that a new binary search tree is gotten with every re-arrangement of A. No two arrangements of A give the same binary search tree. 
+
+So, one thing we can do is visit all arrangements of the list, construct a binary search tree and then sum the leaves. 
+There are n! arrangements, we need n log n time to make the tree and we need to do a linear scan to find out the leaves. 
+The complexity of doing this would be O(n! x n log n x n) = O(n! n^2 log n)
+
+This is not practical for n > 10.
+
+-------------------------------------------
+
+Instead of making all trees and checking all it's leaves, let's try to find out when A[i] is a leaf.
+
+If the list is sorted - A[1] < A[2] < .... < A[i - 1] < A[i] < A[i + 1] < ... < A[n],
+
+A[i] is a leaf whenever A[i - 1] and A[i + 1] are inserted into a tree. Let us prove this. 
+
+Let us say A[i - 1] and A[i + 1] is already in the tree.
+If A[i] is inserted after A[i - 1], it will go left  or right whenever A[i - 1] or A[i + 1] goes left or right. 
+At some point it will interact with both A[i - 1] and A[i + 1] (and is a child of whichever node was inserted later).
+
+A[i] will lie to the right of A[i - 1] and to the left of A[i + 1].  
+
+Now, what will happen to any element smaller than A[i - 1] ? It will come till A[i - 1] and then go LEFT. So, it can never interact with A[i].
+What will happen to any element greater than A[i + 1] ? It will come till A[i + 1] and then go RIGHT. So, it will never interact with A[i]. 
+
+This shows that no element will interact with A[i] and it's forced to be a leaf.
+A[i] is to the right of A[i - 1] and A[i] is to the left of A[i - 1]. 
+
+-------------------------------------------------------------------------------------
+
+Now, A[i] is a leaf whenever we arrange the nodes such that [A1, A2, ... , An] is arranged in such a way that A[i - 1] and A[i + 1] come before it. 
+
+Actually, we don't need to count how many times this will happen (It's a huge number.) We need to find it's probability.  Now, the rest of the array's order doesn't matter.
+
+All that matters is the relative order of (A[i - 1], A[i], A[i + 1]) ... If we fix A[i] at the end, then we have two ways - 
+
+(A[i - 1], A[i + 1], A[i]) or (A[i + 1], A[i - 1], A[i])
+
+Totally, there are 6 ways ... So in every 6 random binary search trees, A[i] will be a leaf in 2 of them. 
+
+So, the total expectation of getting A[i] = Probability of getting A[i] * A[i] = 2/6 x A[i]
+
+There's a trick here ... we can't just sum over all A[i] ...
+
+A[1] and A[n] have only one neighbour ! For them, it's 1/2 ... So, the expectation for A[1] = 3/6 x A[1] (Make the denominator 6 for convenience.)
+
+-------------------------------------------------------------------------------------------------
+
+Total expectation = (3A[1] + 2(A[2] + A[3] + ... + A[n - 1]) + 3A[n])/6
+
+--------------------------------------------------------------------------------------
+
+void solve()
+{
+    int no_of_coins;
+    scanf("%d", &no_of_coins);
+
+    vector <long long> coin(no_of_coins + 1, 0);
+    for(int i = 1; i <= no_of_coins; i++) scanf("%lld", &coin[i]);
+
+    if(no_of_coins == 1)
+    {
+        printf("%lld\n", coin[1]);
+        return;
+    }
+
+    sort(all(coin));
+
+    long long numerator = 0, denominator = 6;
+
+    for(int i = 1; i <= no_of_coins; i++) numerator += coin[i]*(i == 1 || i == no_of_coins ? 3 : 2);
+
+    int gcd_fraction = gcd(numerator, denominator);
+    numerator /= gcd_fraction;
+    denominator /= gcd_fraction;
+
+    if(denominator == 1)
+        printf("%lld\n", numerator);
+    else
+        printf("%lld/%lld\n", numerator, denominator);
+}
