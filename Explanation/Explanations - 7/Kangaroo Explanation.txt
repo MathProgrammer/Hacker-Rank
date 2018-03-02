@@ -1,0 +1,50 @@
+
+Now, two ways of doing it ... 
+
+1. Simulate the process. Notice that if the faster kangaroo is in front, the smaller will never catch up. 
+
+Simulate till the faster is in front of the slower kangaroo.
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() 
+{
+    int start_1, speed_1, start_2, speed_2;
+    scanf("%d %d %d %d", &start_1, &speed_1, &start_2, &speed_2);
+    
+    if(speed_1 < speed_2) //Now, Kangaroo 1 is faster
+    {
+        swap(speed_1, speed_2);
+        swap(start_1, start_2);
+    }
+    
+    int location_1 = start_1, location_2 = start_2;
+    
+    while(location_1 < location_2)
+    {
+        location_1 += speed_1;
+        location_2 += speed_2;
+    }
+    
+    printf(location_1 == location_2 ? "YES\n" : "NO\n");
+    return 0;
+}
+
+------------------------------------------------------------------------------------
+
+2. They are asking if there exists an integer t, such that x1 + t.v1 = x2 + t.v2
+
+(x1 - x2) = t(v2 - v1)
+
+Checkk if (x1 - x2) is a multiple of (v2 - v1), ... and also if v1 < v2
+
+int main()
+{
+    int x_1, v_1, x_2, v_2;
+    scanf("%d %d %d %d", &x_1, &v_1, &x_2, &v_2);
+
+    printf(v_1 > v_2 && (x_1 - x_2)%(v_2 - v_1) == 0 ? "YES\n" : "NO\n");
+    return 0;
+}
