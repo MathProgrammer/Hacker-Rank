@@ -1,0 +1,53 @@
+Consider all the subsets of a set S. Define a relation in between subsets in the following way.
+Let 1 be the smallest element in S.
+Every subset T which has a 1 in it, is related to a subset T', such that T' = T - {1}.
+
+Notice that this relation is both injective and surjective. It is a bijection. 
+Also, notice that this relation relates subsets which has cardinatlity of different parity. (Since they differ by only one element.)
+
+This bijection proves that for any given subset S, the number of subsets with even cardinality is equal to the number of odd cardinality subsets.
+
+Since, the number of subsets of a set S is 2^n. The number of subsets of even cardinality is 2^{n-1}.
+
+------------------------------------------------------------------------------------------------------------------
+
+So, if there are o odd numbers in the set, the number of subsets of odd numbers with even cardinality is 2^{o - 1}, including the empty subset. 
+
+There are e even numbers. Total subsets with only even numbers = 2^{e} - 1
+
+Now, with only odd numbers = 2^{o - 1} - 1
+
+Only even = 2^{e} - 1
+
+also we can combine them in any manner we choose
+
+Only odd*only even.
+
+
+---------------------------------------------------------------------------------------
+
+int main()
+{
+    int no_of_elements;
+    scanf("%d", &no_of_elements);
+
+    int even_nos = 0, odd_nos = 0;
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        int element;
+        scanf("%d", &element);
+
+        even_nos += (element%2 == 0);
+        odd_nos += (element%2 == 1);
+    }
+
+    const int MOD = 1e9 + 7;
+
+    long long only_even_subsets = (power_mod(2, even_nos, MOD) + MOD - 1)%MOD;
+    long long only_odd_subsets = (power_mod(2, odd_nos - 1, MOD) + MOD - 1)%MOD;
+
+    long long answer = (only_even_subsets + only_odd_subsets + only_odd_subsets*only_even_subsets)%MOD;
+
+    printf("%lld\n", answer);
+    return 0;
+}
