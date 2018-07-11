@@ -1,0 +1,87 @@
+This problem can be done in two ways - 
+
+1. Binary search.
+2. In O(1) time. 
+
+Firstly, let us discuss how we can find the number of digits in the n-th Fibonacci number ?
+
+The n-th Fibonacci number = 1/root(5) phi^n - x, where x is negligible as n is large. 
+
+So, the number of digits in the n-th Fibonacci number = log(phi^n/root(5)) = n log phi - log(5)/2
+
+The number of digits of the Fibonacci numbers is monotonic !
+
+int digits_in_fibonacci(int n)
+{
+    if(n < 7)
+        return 1;
+    
+    const double PHI = 1.618033987;
+    
+    double digits = (n*log10(PHI)) - log10(5)/2;
+    
+    return ceil(digits);
+}
+
+void solve()
+{
+    int no_of_digits;
+    cin >> no_of_digits;
+    
+    int answer;
+    int left = 1, right = 100000;
+    while(left <= right)
+    {
+        int mid = (left + right) >> 1;// cout << mid << " " << digits_in_fibonacci(mid) << endl;
+        
+        if(digits_in_fibonacci(mid) == no_of_digits)
+        {
+            if(digits_in_fibonacci(mid - 1) < no_of_digits)
+            {
+                answer = mid;
+                break;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        else if(digits_in_fibonacci(mid) > no_of_digits)
+        {
+            right = mid - 1;
+        }
+        else if(digits_in_fibonacci(mid) < no_of_digits)
+        {
+           left = mid + 1;
+        }
+            
+    }
+    
+    cout << answer << "\n";
+}
+
+----------------------------------------------
+
+In O(1) time, we simply notice that 10^{n - 1} has n digits. 
+
+So log(10^(n - 1)) = log(F_x)
+
+notice that we can't just set n = log(F_x), as we need to take CEIL FIRST. 
+
+So, we just equate the logs. 
+
+(n - 1) = x log phi - log(5)/2
+
+Make x the subject of the equation and we are done !
+
+int main()
+{
+    const int NO_OF_DIGITS = 100;
+
+    const double PHI = 1.618033987;
+    int answer = ceil( (NO_OF_DIGITS - 1 + log10(5)/2)/(log10(PHI)) );
+
+    cout << answer << "\n";
+
+    return 0;
+}
