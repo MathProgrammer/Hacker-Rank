@@ -1,0 +1,64 @@
+
+---------------------------------------------
+
+Finally understood the coin sum recurrence relation ! Feeling happy !
+
+Here is what it is ...
+
+Let f(i, j) be the number of ways of reaching sum i, using coins till j.
+
+Then, there are two options 
+
+1. We use the j-th coin .......... f(i, j) = f(i - value[j], j)
+
+2. We don't use the j-th coin ... f(i, j) = f(i, j - 1)
+
+So, f(i, j) = f(i - value[j], j) + f(i, j - 1)
+
+-----------------------------
+
+I got a WA because I didn't understand the base case ...
+
+f(0, j) = 1, for all j. 
+
+There is one way to get a sum of 0. 
+
+---------------------------
+
+vector <vector <long long> > no_of_ways_to_make(1e5 + 1, vector <long long> (8 + 1, 0));
+
+void precompute_coin_sums()
+{
+    const int MOD = 1e9 + 7;
+    int coin_value[8 + 1] = {0, 1, 2, 5, 10, 20, 50, 100, 200};
+
+    for(int coin_no = 1; coin_no <= 8; coin_no++)
+    {
+        no_of_ways_to_make[0][coin_no] = 1;
+    }
+
+    for(int coin_no = 1; coin_no <= 8; coin_no++)
+    {
+        for(int sum_reached = 1; sum_reached <= 1e5; sum_reached++)
+        {
+            if(sum_reached >= coin_value[coin_no])
+            {
+                no_of_ways_to_make[sum_reached][coin_no] = (no_of_ways_to_make[sum_reached][coin_no - 1]//Don't use coin i
+
+                                                            + no_of_ways_to_make[sum_reached - coin_value[coin_no] ][coin_no])%MOD; //Use coin i
+            }
+            else
+            {
+                no_of_ways_to_make[sum_reached][coin_no] = no_of_ways_to_make[sum_reached][coin_no - 1];
+            }
+        }
+    }
+}
+
+void solve()
+{
+    int sum;
+    scanf("%d", &sum);
+
+    printf("%lld\n",no_of_ways_to_make[sum][8]);
+}

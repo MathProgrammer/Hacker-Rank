@@ -1,0 +1,45 @@
+
+------------------------------------------------
+
+Simple prime factorisation is sufficient.
+
+Big integers aren't required either ... No precomputation is necessary.
+
+Go from i = 2 to root(n), 
+	If n is divisible by i, then 
+		divide n by i continuously so that n will not be divisible by any of i's multiples again.
+		Set i as the greatest prime factor of n.
+
+After everything, check if n is greater than 1 ... If it is then set n as the greatest prime factor of n.
+
+A number n can have at most one prime factor greater than it's square root. That is why this is true.
+I made a mistake and was checking if n > 0 .. This is wrong as n becomes 1 after all it's prime factors are cancelled. Not zero.
+
+----------------------------------------------
+
+void solve()
+{
+    long long n, reduced_n;
+    scanf("%lld", &n);
+    
+    reduced_n = n;
+    long long largest_prime;
+    
+    for(long long i = 2; i*i <= n; i++)
+    {
+        if(reduced_n%i == 0)
+        {
+            largest_prime = i;
+            while(reduced_n%i == 0)
+            {
+                reduced_n /= i;
+            }
+        }
+    }
+    
+    if(reduced_n > 1)
+        largest_prime = reduced_n;
+    
+    printf("%lld\n", largest_prime);
+    
+}

@@ -1,0 +1,58 @@
+Now, if 2 + 3, and 3 + 2 were considered different sums i.e. if the order of the summands mattered, then
+
+f(0) = 1
+f(n) = f(n) - i, i <= n 
+
+Also, it can be shown that f(n) = 2^(n - 1)
+
+But, the order of summands doesn't matter and we need to find a way to ensure that each summand is only counted once. 
+One way to do it is to refer to each sum, by it's largest summand.
+
+f(n, L) be the number of ways to sum up to n, with the largest summand <= L
+
+f(0, L) = 1
+f(n, 1) = 1
+f(n, L) = f(n, L - 1) + f(n - L, L)
+
+
+Answer is f(n, n - 1)
+
+---------------------------------------------------------------------
+
+void precompute()
+{
+    for(int largest_part = 0; largest_part < MAX_N; largest_part++)
+        no_of_ways[0][largest_part] = 1;
+
+    for(int n = 1; n < MAX_N; n++)
+    {
+        no_of_ways[n][1] = 1;
+
+        for(int largest_part = 2; largest_part < MAX_N; largest_part++)
+        {
+            no_of_ways[n][largest_part] = no_of_ways[n][largest_part - 1];
+
+            if(largest_part <= n)
+                no_of_ways[n][largest_part] += no_of_ways[n - largest_part][largest_part];
+
+            no_of_ways[n][largest_part] %= MOD;
+        }
+    }
+}
+
+int main()
+{
+    precompute();
+
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+
+    while(no_of_test_cases--)
+    {
+        int N;
+        scanf("%d", &N);
+        printf("%lld\n", no_of_ways[N][N - 1]);
+    }
+
+    return 0;
+}
