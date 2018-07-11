@@ -1,0 +1,96 @@
+
+
+Let f(i, j) be the number of ways to write i as the sum of the first j primes.
+
+We have two options - Either we include the j-th prime or we don't.
+
+If the first prime is included, f(i - p[j], j)
+
+If we dont, f(i, j - 1)
+
+So, f(i, j) = f(i, j - 1) + f(i - p[j], j)
+
+This is O(n^2) time but can be optimised to O(n) space.
+
+The trick is to rewrite the loops so that, f(i) contains f(i, j) when we visit it.
+
+for(j = 1 to Primes.size)
+	for(int i = 1 to N)
+		if(p[j] <= i)
+			f(i) += f(i - p[j])          //Here, f(i) constains f(i, j - 1) when we visit and f(i - p[j]) contains f(i - p[j], j)
+
+Notice, if we did it the other way around it wouldn't be true
+
+for(i = 1 to N)
+	for(j = 1 to Primes.size())
+		if(p[j] <= i)
+			f(i) += f(i - p[j])
+
+Here, f(i - p[j]) doesn't hold the value of f(i - p[j], j) necessarily. Because for i = i - p[j], we have stored values for more than j primes.
+
+-----------------------------------------------------
+
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+const int MAX_N = 1e3 + 1;
+long long no_of_ways[MAX_N] = {0};
+
+vector <int> is_prime(MAX_N + 1, true);
+vector <int> primes;
+
+void sieve()
+{
+    is_prime[0] = is_prime[1] = false;
+
+    for(int i = 2; i < MAX_N; i++)
+    {
+        if(is_prime[i])
+            primes.push_back(i);
+
+        for(int j = 0; j < primes.size() && i*primes[j] < MAX_N; j++)
+        {
+            is_prime[i*primes[j]] = false;
+
+            if(i%primes[j] == 0) break;
+        }
+    }
+}
+
+void precompute()
+{
+    sieve();
+
+    no_of_ways[0] = 1;
+
+    for(int i = 1; i < MAX_N; i++)
+        no_of_ways[i] = (i%2 == 0);
+
+    for(int j = 1; j < primes.size(); j++)
+    {
+        for(int i = 1; i < MAX_N; i++)
+        {
+            if(primes[j] <= i) no_of_ways[i] += no_of_ways[i - primes[j]];
+        }
+    }
+
+}
+
+int main()
+{
+    precompute();
+
+    int no_of_test_cases;
+    scanf("%d", &no_of_test_cases);
+
+    while(no_of_test_cases--)
+    {
+        int N;
+        scanf("%d", &N);
+        printf("%lld\n", no_of_ways[N]);
+    }
+
+    return 0;
+}

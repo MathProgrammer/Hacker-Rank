@@ -1,0 +1,29 @@
+In the 5 by 5 matrix below, the minimal path sum from the top left to the bottom right, by only moving to the right and down, is indicated in bold red and is equal to 2427.
+
+------------------------------------------------------------
+
+Here's the DP required ...
+Let min[i][j] denote the minimum sum starting from i, j. So, the last element is itself by default and in the last row and column, we only have one choice of movement.
+
+min_sum[n][n] = m[n][n],
+min_sum[i][n] = m[i][n] + m[i + 1][n], i =/= n
+min_sum[n][i] = m[n][i] + m[n][i + 1], i=/= n
+
+For all other i, j
+min_sum[i][j] = m[i][j] + min{min_sum[i][j + 1], min_sum[i + 1][j]}
+
+---------------------------------------------------
+
+min_sum_starting_here[order_of_matrix][order_of_matrix] = matrix[order_of_matrix][order_of_matrix];
+    for(i = order_of_matrix - 1; i >= 1; i--)
+    {
+        min_sum_starting_here[i][order_of_matrix] = matrix[i][order_of_matrix] +  min_sum_starting_here[i + 1][order_of_matrix];
+        min_sum_starting_here[order_of_matrix][i] = matrix[order_of_matrix][i] +  min_sum_starting_here[order_of_matrix][i + 1];
+    }
+
+    for(row = order_of_matrix - 1; row >= 1; row--)
+        for(column = order_of_matrix - 1; column >= 1; column--)
+            min_sum_starting_here[row][column] = matrix[row][column] + min(min_sum_starting_here[row][column + 1], min_sum_starting_here[row + 1][column]);
+
+
+    printf("%lld\n", min_sum_starting_here[1][1]);
