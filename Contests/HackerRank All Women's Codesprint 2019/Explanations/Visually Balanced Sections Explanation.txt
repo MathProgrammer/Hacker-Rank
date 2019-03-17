@@ -16,6 +16,21 @@ In other words, we want to count the number of segments [L, R] where XOR[R]^XOR[
 
 ----
 
+How do we count the number of such segments ?
+
+We will keep track of the frequency of each prefix XOR. 
+
+Suppose XOR[R]^XOR[L - 1] = 2^5, 
+
+Then XOR[R]^(2^5) = XOR[L - 1]
+
+So when are at i, we will check all 50 powers of 2 and check the frequency of XOR[i]^(2^p) ... This corresponds to the number of good segments so we shall add it to the answer. 
+
+Of course XOR[0] = 1, and frequency[0] = 1 at the beginning.
+
+----
+
+Overall Time Complexity is O(T x N x C)
 
 ----
  
