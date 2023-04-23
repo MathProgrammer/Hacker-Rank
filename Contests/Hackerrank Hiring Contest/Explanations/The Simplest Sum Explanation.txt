@@ -1,0 +1,37 @@
+Since the series grows geometerically and k >= 2, there can be at most 64 terms since 2^{64} > 10^{18}
+
+Precompute all the terms till 10^{18}
+
+For each term, count how many series it appears in 
+
+An element x occurs in all sequences that begin at max(x, L) and end at R
+
+------
+
+void solve() 
+{    
+    long long k, left, right; 
+    cin >> k >> left >> right;
+    
+    vector <long long> terms; 
+    terms.push_back(1); 
+    while(terms.back() <= (right - 1)/k)
+    {
+        long long next = terms.back()*k + 1; 
+        terms.push_back(next);
+        //cout << "Last term " << terms.back() << "\n";
+    }
+    
+    const int MOD = 1e9 + 7;
+    long long answer = 0;
+    for(long long term : terms)
+    {
+        long long contribution = right - max(left - 1, term - 1);
+        contribution %= MOD;
+        
+        answer += (term*contribution)%MOD;
+        answer %= MOD;
+    }
+    
+    cout << answer << "\n";
+}
