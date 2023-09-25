@@ -22,7 +22,8 @@ void solve()
         return ;
     }
     
-    long long empty_squares_needed = 1 + ceil(snakes, moves - 1);
+    const int STARTING = 1;
+    long long empty_squares_needed = STARTING + ceil(snakes, moves - 1);
     long long squares = snakes + empty_squares_needed; 
     long long rows = sqrt(2*squares);
     while(rows*(rows + 1) < 2*squares)
