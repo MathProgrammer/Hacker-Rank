@@ -1,0 +1,155 @@
+This problem requires an understanding of Grundy Numbers. 
+
+
+----- 
+
+The first player wins if and only if the initial grundy is not 0. 
+
+1. If the initial grundy is not 0, then it is possible for the first player to reach 0 
+(Otherwise, 0 would be the mex and grundy of the current state.) 
+2. When the second player gets a state of grundy 0, any move he makes (if possible) would 
+be a non-0 grundy. 
+
+This repeats and a grundy of state 0 can only be reached after the first player's move. 
+Since the terminal state is a grundy of state 0, it can only happen after the first player's move. 
+
+When the initial grundy is non-0, the first player is in the same situation as the second player above. 
+
+------
+
+Now, let us discuss how to calculate a Grundy of a state. 
+
+
+Let the curreny array be A. We have two operations available to us - 
+
+1. A - min(A) 
+2. A' : {Ai/2}
+
+So Grundy(A) = mex{A - min(A), A'}
+
+It is difficult to store the entire array in memory and keep doing this operation. 
+
+We need a more succint way to calculate the grundy. 
+
+We can uniquely represent an array by the index we are at and the number of division operations performed. 
+
+Let G(i, d) be the grundy of an array where we are at index i (and removed all smaller elements) and performed d division operations.
+
+G(i, d) = mex{G(i + 1, d), G(i, d + 1)}
+
+provided both these states are legal. 
+
+1. If A[i] = 0 after performing d divisions, then G(i, d) is not a legal state and we will not calculate it. 
+
+2. If A[i] > 0 after performing d division, but A[i] becomes <= 0 after (d + 1)-th operation, then we must 
+find the first element in the array which is non-0. 
+
+For example if the array is {1, 1, 2} 
+After performing a division operation, it will become {0, 0, 1} or effectively {1} 
+
+We want G(1, 0) to be mex {G(2, 0), G(3, 1)}
+
+Because A[3] is the first non-0 element after performing a division, not (i + 1 = 2). 
+
+This is why we must find j - the first index A[j] such that A[j] > 2^d
+
+G(i, d) = mex{G(i + 1, d), G(j, d + 1)}
+
+3. G(N + 1, x) = 0 for convenience. 
+
+Instead of actually performing the division steps on the array, we will just check if 2^d > A[i] to see if A[i] becomes 0 after d steps.
+This is avery important step. 
+
+------
+
+void solve()
+{
+    int no_of_elements;
+    cin >> no_of_elements;
+
+    vector <int> A(no_of_elements + 1);
+    for(int i = 1; i <= no_of_elements; i++)
+    {
+        cin >> A[i];
+    }
+
+    const int oo = 1e9;
+    A.push_back(oo);
+
+    sort(A.begin(), A.end());
+
+    for(int i = no_of_elements + 1; i >= 1; i--)
+    {
+        for(int moves = MAX_L - 1; moves >= 0; moves--)
+        {
+            if(i == no_of_elements + 1)
+            {
+                grundy[i][moves] = 0;
+            }
+            else if(power_2(moves) > A[i])
+            {
+                continue;
+            }
+            else
+            {
+                set <int> next_states;
+
+                int remove_state = grundy[i + 1][moves];
+                next_states.insert(remove_state);
+
+                int first_greater_index = get_first_greater_index(power_2(moves + 1), i, no_of_elements + 1, A);
+                int divide_state = grundy[first_greater_index][moves + 1];
+                next_states.insert(divide_state);
+
+                grundy[i][moves] = mex(next_states);
+            }
+        }
+    }
+
+    int initial_grundy = grundy[1][0];
+
+    cout << (initial_grundy != 0 ? "Gamze" : "Yasin") << "\n";
+}
+
+------
+
+Mex Function - 
+
+int mex(set <int> &S)
+{
+    for(int m = 0; ; m++)
+    {
+        if(S.count(m) == 0)
+        {
+            return m;
+        }
+    }
+}
+
+------
+
+Binary search function to find the first element > 2^d in the suffix [i, N]
+
+int get_first_greater_index(int value, int left, int right, vector <int> &A)
+{
+    if(value <= A[left])
+    {
+        return left;
+    }
+
+    while(right - left > 1)
+    {
+        int mid = (left + right)/2;
+
+        if(value <= A[mid])
+        {
+            right = mid;
+        }
+        else
+        {
+            left = mid;
+        }
+    }
+
+    return right;
+}

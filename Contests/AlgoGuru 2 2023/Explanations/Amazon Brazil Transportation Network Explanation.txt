@@ -1,0 +1,165 @@
+Let us build the minimum spanning tree of this graph. 
+
+Assign the K highest weights to amazon trucks and all the lower weights to the 3P 
+
+We want to know the value of the maximum such edge. 
+
+In order to avoid floating point errors, use D^2 while sorting the edges and only take the square root while finding the answer. 
+
+I wrote my own square root function and got WA a couple of times because the precision of epsilon was too low. 
+Epsilon should be 1e-6 to pass. 
+
+-----
+
+void solve()
+{
+    int no_of_trucks, no_of_vertices;
+    cin >> no_of_trucks >> no_of_vertices;
+
+    vector <long long> x(no_of_vertices + 1), y(no_of_vertices + 1);
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        cin >> x[i] >> y[i];
+    }
+
+    vector <edge> edges;
+    for(int i = 1; i <= no_of_vertices; i++)
+    {
+        for(int j = i + 1; j <= no_of_vertices; j++)
+        {
+            edges.push_back(edge(i, j, x[i], y[i], x[j], y[j]));
+        }
+    }
+
+    sort(edges.begin(), edges.end());
+
+    int total_edges = no_of_vertices - 1;
+    double cost = 0;
+    DSU dsu(no_of_vertices + 1);
+    for(int i = 0, edges_remaining = total_edges; i < edges.size() && edges_remaining >= 0; i++)
+    {
+        int parent_u = dsu.get_parent(edges[i].u), parent_v = dsu.get_parent(edges[i].v);
+
+        if(parent_u == parent_v)
+        {
+            continue;
+        }
+
+
+        if(edges_remaining > no_of_trucks)
+        {
+            cost = max(cost, square_root(edges[i].distance_squared));
+        }
+
+        dsu.unite(edges[i].u, edges[i].v);
+        edges_remaining--;
+    }
+
+    printf("%.2f\n", cost);
+}
+
+------
+
+Square Root Function - 
+
+double square_root(long long n)
+{
+    double left = 0, right = 1e5;
+    const double epsilon = 1e-6;
+
+    while(right - left > epsilon)
+    {
+        double mid = (left + right)/2;
+
+        if(mid*mid <= n)
+        {
+            left = mid;
+        }
+        else
+        {
+            right = mid;
+        }
+    }
+
+    return left;
+}
+
+-----
+
+Edge struct with custom sorting by distance - 
+
+struct edge
+{
+    int u, v;
+    long long distance_squared;
+
+    edge()
+    {
+        u = v = 0;
+        distance_squared = 0;
+    }
+
+    edge(int U, int V, int x1, int y1, int x2, int y2)
+    {
+        u = U;
+        v = V;
+        distance_squared = (x2 - x1)*1LL*(x2 - x1) + (y2 - y1)*1LL*(y2 - y1);
+    }
+
+    const int operator<(edge &E)
+    {
+        return (distance_squared < E.distance_squared);
+    }
+};
+
+-----
+
+DSU - 
+
+struct DSU
+{
+    vector <int> parent;
+    vector <long long> component_size;
+
+    DSU(int n)
+    {
+        parent.resize(n + 1);
+        component_size.resize(n + 1);
+
+        for(int i = 1; i <= n; i++)
+        {
+            parent[i] = i;
+            component_size[i] = 1;
+        }
+    }
+
+    int get_parent(int x)
+    {
+        while(x != parent[x])
+        {
+            int grandparent = get_parent(parent[x]);
+
+            parent[x] = grandparent;
+
+            x = parent[x];
+        }
+
+        return x;
+    }
+
+    void unite(int u, int v)
+    {
+        int parent_u = get_parent(u), parent_v = get_parent(v);
+
+        if(parent_u == parent_v)
+            return;
+
+        if(component_size[parent_u] > component_size[parent_v])
+            swap(parent_u, parent_v);
+
+        component_size[parent_v] += component_size[parent_u];
+        component_size[parent_u] = 0;
+
+        parent[parent_u] = parent[parent_v];
+    }
+};

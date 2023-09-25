@@ -1,0 +1,90 @@
+First let us discuss how to solve this problem if we only had queries of Type 1. 
+
+Let us make an auxilliary array S of length N. 
+
+For every query [L, R], mark queries_starting[L] +1 and queries_ending[R] +1 
+
+In order to find the value of every square, we have to do a sweep like this - 
+
+vector <long long> answer(no_of_days + 1);
+    for(int i = 1; i <= no_of_days; i++)
+    {
+        answer[i] = answer[i - 1] + queries_starting[i] - queries_ending[i - 1];
+        answer[i] += MOD;
+        answer[i] %= MOD;
+    }
+
+
+-------
+
+
+Now, how to handle queries of Type 2
+
+Since every query only impacts a subarray before it, we should process the queries from right to left. 
+
+Let us notice that N, M < 1000 which means a quadratic solution is possible. 
+
+For a query of Type 2, we can go back from L to R and increase the net impact of each query by +1
+
+-----
+
+We will do one sweep to handle all queries of Type 2
+
+Then, we are left with an array of queries of Type 1, which is already discussed above. 
+
+------
+
+int main()
+{
+    const int MOD = 1e9 + 7;
+
+    int no_of_days, no_of_instructions;
+    cin >> no_of_days >> no_of_instructions;
+
+    vector <int> query_left(no_of_instructions + 1), query_right(no_of_instructions + 1);
+    vector <int> query_type(no_of_instructions + 1);
+    vector <long long> query_value(no_of_instructions + 1);
+    for(int i = 1; i <= no_of_instructions; i++)
+    {
+        int index;
+        cin >> index >> query_type[i] >> query_left[i] >> query_right[i];
+        query_value[i] = 1;
+    }
+
+    vector <long long> queries_starting(no_of_days + 1), queries_ending(no_of_days + 1);
+    for(int i = no_of_instructions; i >= 1; i--)
+    {
+        if(query_type[i] == 1)
+        {
+            queries_starting[query_left[i]] += query_value[i];
+            queries_starting[query_left[i]] %= MOD;
+
+            queries_ending[query_right[i]] += query_value[i];
+            queries_ending[query_right[i]] %= MOD;
+        }
+        else if(query_type[i] == 2)
+        {
+            for(int j = query_left[i]; j <= query_right[i]; j++)
+            {
+                query_value[j] += query_value[i];
+                query_value[j] %= MOD;
+            }
+        }
+    }
+
+    vector <long long> answer(no_of_days + 1);
+    for(int i = 1; i <= no_of_days; i++)
+    {
+        answer[i] = answer[i - 1] + queries_starting[i] - queries_ending[i - 1];
+        answer[i] += MOD;
+        answer[i] %= MOD;
+    }
+
+
+    for(int i = 1; i <= no_of_days; i++)
+    {
+        cout << answer[i] << " ";
+    }
+    cout << "\n";
+    return 0;
+}

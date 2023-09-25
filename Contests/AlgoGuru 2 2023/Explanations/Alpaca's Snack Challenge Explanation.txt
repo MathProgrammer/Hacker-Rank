@@ -1,0 +1,27 @@
+Let maximum_sequence_ending_at[ch] be the length of the maximum sequence ending at ch. 
+
+Then maximum_sequence_ending_at[ch] = max{maximum_sequence_ending_at[ch], 1 + maximum_sequence_ending_at[other_ch]}
+
+The answer is the length of a sequence ending at either C or T. 
+
+-------
+
+int main()
+{
+    string S;
+    cin >> S;
+
+    int answer = 0;
+    map <char, int> max_sequence_ending_at;
+    for(int i = 0; i < S.size(); i++)
+    {
+        char current = S[i];
+        char other = (S[i] == 'T' ? 'C' : 'T');
+
+        max_sequence_ending_at[current] = max(max_sequence_ending_at[current], 1 + max_sequence_ending_at[other]);
+        answer = max(answer, max_sequence_ending_at[current]);
+    }
+
+    cout << answer << "\n";
+    return 0;
+}

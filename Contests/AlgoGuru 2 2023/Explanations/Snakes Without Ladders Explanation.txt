@@ -1,0 +1,70 @@
+First of all, we can make all snake tails to land on square 1. 
+This leaves us free to put the snake heads anywhere else in the board. 
+
+Now, we have to be able to finish the game by making moves of length K. 
+
+This means, that there can be at most (K - 1) consecutive snakes. 
+
+We need the following empty squares - 
+
+1. To start 
+2. In between every consecutive segment of size (K - 1) 
+3. To Finish 
+
+If S = 0 (mod K - 1), then the number of empty squares is simply S/(K - 1) 
+
+If S =/= 0 (mod K - 1), then we need another empty square. 
+
+So the number of empty squares is 1 + ceil(S, K - 1)
+
+-----
+
+Now we know the total number of squares - N
+
+Let us find the minimum number of rows which results in this. 
+
+It is the smallest R such that R(R + 1)/2 >= N 
+
+Now, I was getting WA while doing binary search, probably due to overflow of the big numbers. 
+
+Instead of binary search, we can do a more accurate approximation by noticing that 
+
+R(R + 1) >= 2N 
+(R + 1)(R + 1) >= R(R + 1) >= 2N
+(R + 1) >= sqrt(2N) 
+R >= sqrt(2N) 
+
+We can start with sqrt(2N) and then go up till we find the required R. 
+We will not have to go up too many steps because the square function grows very quickly. 
+
+------
+
+long long ceil(long long numerator, long long denominator)
+{
+    return numerator/denominator + (numerator%denominator != 0);
+}
+
+void solve()
+{
+    int moves;
+    long long snakes;
+    cin >> snakes >> moves;
+
+    if(moves == 1)
+    {
+        cout << (snakes == 0 ? 1 : -1) << "\n";
+        return ;
+    }
+
+    const int STARTING = 1;
+    long long empty_squares_needed = STARTING + ceil(snakes, moves - 1);
+    long long squares = snakes + empty_squares_needed;
+    long long rows = sqrt(2*squares);
+    while(rows*(rows + 1) < 2*squares)
+    {
+        rows++;
+    }
+
+    cout << rows << "\n";
+}
+
